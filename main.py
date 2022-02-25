@@ -87,8 +87,8 @@ def get_unreported(token, team, dep="计算机学院"):
     reported_num = resj["data"]["data"]["reportCount"]
     print("已打卡人数：", reported_num)
     print("未打卡人数：", unreport_num)
-    if (int(unreport_num) > 0):
-        if (int(unreport_num) <= 4):
+    if int(unreport_num) > 0:
+        if int(unreport_num) <= 4:
             return ("请可爱的" + "、".join(
                 [item["userName"] for item in resj["data"]["data"]["unReportUsers"]]) + "尽快完成小one易健康打卡")
         else:
@@ -100,7 +100,7 @@ def get_unreported(token, team, dep="计算机学院"):
 
 conn.commit()
 cursor.execute("""
-SELECT 班级表.id,班级表.`学院`,班级表.`班级`,班级表.`班级群名`,令牌表.token 
+SELECT 班级表.id,班级表.`学院`,班级表.`班级`,班级表.`班级群名`,令牌表.token, 班级表.`联系人`
 FROM 令牌表,班级表
 WHERE 令牌表.`班级id`= 班级表.id 
     and `班级表`.`不提醒` = 'No'
@@ -116,18 +116,16 @@ order by 班级表.id
 for item in cursor.fetchall():
     print("*" * 40)
     try:
-        item_id, dep, team, qunming, token = item
+        item_id, dep, team, qunming, token, admin = item
         print(item)
-        # qunming = "自动化测试"
         mess = get_unreported(token, team, dep=dep)
-        # mess = "测试"
-        if (mess == "token失效"):
+        if mess == "token失效":
             print(mess)
             cor = conn.cursor()
             cor.execute("insert into 错误日志(摘要,内容) values(%s,%s)", (mess, team))
             conn.commit()
-            send_qq(qunming, team + "token失效" + "，请班级管理员联系邓永盛。")
-        elif (mess == "全员打卡完毕"):
+            send_qq(qunming, f"{team}token失效，请班级管理员 {admin} 重新打开小one易并登录。")
+        elif mess == "全员打卡完毕":
             print(mess)
             # 打卡完成记录
             cor = conn.cursor()
