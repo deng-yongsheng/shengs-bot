@@ -22,7 +22,7 @@ nowlist = gui.getAllTitles()
 qqh = gui.getWindowsWithTitle("QQ")[0]
 print(qunlist)
 for i in qunlist:
-    if (i not in nowlist):
+    if i not in nowlist:
         print("打开窗口", i, qunlist[i])
         # p.copy(qunlist[i])
         qqh.activate()
