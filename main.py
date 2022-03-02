@@ -78,7 +78,7 @@ def get_unreported(token, team, dep="计算机学院"):
                       'offset': '0',
                       'limit': '100'}
     res = sess.get("https://www.ioteams.com/ncov/api/users/unReport/department", params=questpatameter)
-    if ('403 Forbidden' in res.text):
+    if '403 Forbidden' in res.text:
         return "token失效"
     resj = json.loads(res.text)
     unreport_num = resj["data"]["data"]["unReportCount"]
