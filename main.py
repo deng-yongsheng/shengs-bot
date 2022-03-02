@@ -20,7 +20,6 @@ cursor.execute("SELECT 班级群名,班群群号 FROM 班级表 where 班级群�
 qunlist = dict(cursor.fetchall())
 nowlist = gui.getAllTitles()
 qqh = gui.getWindowsWithTitle("QQ")[0]
-# qunlist.update({"自动打卡机器人官方群":"935513061"})
 print(qunlist)
 for i in qunlist:
     if (i not in nowlist):
@@ -79,7 +78,6 @@ def get_unreported(token, team, dep="计算机学院"):
                       'offset': '0',
                       'limit': '100'}
     res = sess.get("https://www.ioteams.com/ncov/api/users/unReport/department", params=questpatameter)
-    # print(res.text)
     if ('403 Forbidden' in res.text):
         return "token失效"
     resj = json.loads(res.text)
