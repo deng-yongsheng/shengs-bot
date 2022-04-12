@@ -16,17 +16,18 @@ def get_unreported(token, team, dep="计算机学院"):
     print()
     sess = requests.session()
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/86.0.4240.111 Safari/537.36",
         "ncov-access-token": "%s" % token}
     sess.headers = headers
     # 获取未登录人员
-    questpatameter = {'department': '%s' % dep,
-                      'team': team,
-                      'date': '%s' % (time.strftime("%Y-%m-%d")),
-                      'sort': 'jobNumber',
-                      'offset': '0',
-                      'limit': '100'}
-    res = sess.get("https://www.ioteams.com/ncov/api/users/unReport/department", params=questpatameter)
+    request_parameter = {'department': '%s' % dep,
+                         'team': team,
+                         'date': '%s' % (time.strftime("%Y-%m-%d")),
+                         'sort': 'jobNumber',
+                         'offset': '0',
+                         'limit': '100'}
+    res = sess.get("https://www.ioteams.com/ncov/api/users/unReport/department", params=request_parameter)
     if '403 Forbidden' in res.text:
         return "token失效"
     res_j = json.loads(res.text)
