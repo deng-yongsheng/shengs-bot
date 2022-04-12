@@ -37,11 +37,11 @@ def get_unreported(token, team, dep="计算机学院"):
     print("未打卡人数：", unreported_num)
     if int(unreported_num) > 0:
         if int(unreported_num) <= 4:
-            return ("请可爱的" + "、".join(
-                [item["userName"] for item in res_j["data"]["data"]["unReportUsers"]]) + "尽快完成小one易健康打卡")
+            return ("请可爱的" + "、".join(map(lambda x: x["userName"], res_j["data"]["data"]["unReportUsers"]))
+                    + "尽快完成小one易健康打卡")
         else:
-            return ("请" + "、".join(
-                [item["userName"] for item in res_j["data"]["data"]["unReportUsers"]]) + "尽快完成小one易健康打卡")
+            return ("请" + "、".join(map(lambda x: x["userName"], res_j["data"]["data"]["unReportUsers"]))
+                    + "尽快完成小one易健康打卡")
     else:
         return "全员打卡完毕"
 
