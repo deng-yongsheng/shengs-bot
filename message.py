@@ -42,7 +42,6 @@ def send_qq(to_who, msg, save_log=True):
 def open_all_windows():
     """
     打开所有的qq群对话框
-    :param group_list:
     :return:
     """
     global conn
