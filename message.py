@@ -17,15 +17,15 @@ def set_text_to_clip(string):
 def send_qq(to_who, msg, save_log=True):
     global conn
     print("sendto:%s,%s" % (to_who, msg))
-    """发送qq消息
+    """
+    发送qq消息
     to_who：qq消息接收人
     msg：需要发送的消息
     """
     # 将消息写到剪贴板
     set_text_to_clip(msg)
     # 获取qq窗口句柄
-    qq = win32gui.FindWindow(None,
-                             to_who)
+    qq = win32gui.FindWindow(None, to_who)
     # 投递剪贴板消息到QQ窗体
     win32gui.SendMessage(qq, 258, 22, 2080193)
     win32gui.SendMessage(qq, 770, 0, 0)
