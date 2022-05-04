@@ -1,4 +1,4 @@
-from sqlalchemy import CHAR, Column, DateTime, Enum, ForeignKey, Table, text
+from sqlalchemy import CHAR, Column, DateTime, Enum, ForeignKey, Table, text, Text
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, TINYTEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -25,6 +25,9 @@ t_student_info = Table(
 
 
 class Token(Base):
+    """
+    班级管理员token表
+    """
     __tablename__ = 'token'
 
     token_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
@@ -37,6 +40,9 @@ class Token(Base):
 
 
 class Clas(Base):
+    """
+    班级信息表
+    """
     __tablename__ = 'class'
 
     class_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
@@ -52,6 +58,9 @@ class Clas(Base):
 
 
 class Finish(Base):
+    """
+    打卡完成记录表
+    """
     __tablename__ = 'finish'
 
     finish_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
@@ -65,6 +74,9 @@ class Finish(Base):
 
 
 class Student(Base):
+    """
+    学生信息表
+    """
     __tablename__ = 'students'
 
     student_number = Column(INTEGER(11), primary_key=True)
@@ -76,3 +88,15 @@ class Student(Base):
 
     def __repr__(self):
         return f"<Student {self.student_name}>"
+
+
+class Log(Base):
+    """
+    日志表
+    """
+    __tablename__ = 'log'
+
+    id = Column(INTEGER(11), primary_key=True, autoincrement=True)
+    receiver = Column(TINYTEXT, nullable=False)
+    message = Column(Text, nullable=False)
+    time = Column(DateTime, nullable=False, server_default=text("current_timestamp()"))
