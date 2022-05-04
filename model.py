@@ -42,6 +42,7 @@ class Clas(Base):
     class_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
     class_name = Column(CHAR(20), nullable=False)
     token_id = Column(ForeignKey('token.token_id'), nullable=False, index=True)
+    class_group_name = Column(CHAR(50), nullable=False)
     not_prompt = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
 
     token = relationship('Token')
