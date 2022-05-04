@@ -1,8 +1,8 @@
 import unittest
-from sqlalchemy import and_, func
+from sqlalchemy import func
 from datetime import datetime
 import db
-from model import Finish, Student, Clas, Token
+from model import Finish, Student, Clas, Log
 
 student_info = None
 
@@ -30,6 +30,29 @@ def get_student_info():
     return student_info
 
 
+def log(receiver: str, message: str):
+    """
+    记录消息发送日志
+    :param receiver: 消息接收人
+    :param message: 消息内容
+    :return:
+    """
+    with db.session.begin():
+        log_record = Log(receiver=receiver, message=message)
+        db.session.add(log_record)
+
+
+def class_finished(class_: Clas):
+    """
+    某个班级完成了打卡，不再进行提醒
+    :param class_:
+    :return:
+    """
+    with db.session.begin():
+        finish_record = Finish(class_id=class_.class_id)
+        db.session.add(finish_record)
+
+
 class Test(unittest.TestCase):
 
     def test1(self):
@@ -37,3 +60,6 @@ class Test(unittest.TestCase):
 
     def test2(self):
         print(get_student_info())
+
+    def test3(self):
+        log(receiver='测试', message='测试消息')
