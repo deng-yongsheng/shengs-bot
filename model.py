@@ -1,4 +1,4 @@
-from sqlalchemy import CHAR, Column, ForeignKey, Table, text
+from sqlalchemy import CHAR, Column, DateTime, Enum, ForeignKey, Table, text
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, TINYTEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -27,7 +27,7 @@ t_student_info = Table(
 class Token(Base):
     __tablename__ = 'token'
 
-    token_id = Column(INTEGER(11), primary_key=True)
+    token_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
     admin_name = Column(CHAR(10), nullable=False)
     token = Column(CHAR(50), nullable=False)
     comment = Column(TINYTEXT)
@@ -39,14 +39,28 @@ class Token(Base):
 class Clas(Base):
     __tablename__ = 'class'
 
-    class_id = Column(INTEGER(11), primary_key=True)
+    class_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
     class_name = Column(CHAR(20), nullable=False)
     token_id = Column(ForeignKey('token.token_id'), nullable=False, index=True)
+    not_prompt = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
 
     token = relationship('Token')
 
     def __repr__(self):
         return f"<Class {self.class_name}>"
+
+
+class Finish(Base):
+    __tablename__ = 'finish'
+
+    finish_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
+    class_id = Column(ForeignKey('class.class_id'), nullable=False, index=True)
+    time = Column(DateTime, nullable=False, server_default=text("current_timestamp()"))
+
+    _class: Clas = relationship('Clas')
+
+    def __repr__(self):
+        return f"<打卡完成 {self.time.strftime('%Y-%m-%d')} {self._class.class_name} >"
 
 
 class Student(Base):
