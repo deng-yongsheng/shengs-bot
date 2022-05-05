@@ -1,5 +1,4 @@
 import win32gui
-import win32con
 import time
 import pyautogui as gui
 import pyperclip as p
@@ -24,15 +23,18 @@ def send_qq(to_who, msg, save_log=True):
     """
     # 将消息写到剪贴板
     set_text_to_clip(msg)
-    # 获取qq窗口句柄
-    qq = win32gui.FindWindow(None, to_who)
+    # 获取qq群窗口句柄
+    qq_group = win32gui.FindWindow(None, to_who)
+    qq_group.activate()
     # 投递剪贴板消息到QQ窗体
-    win32gui.SendMessage(qq, 258, 22, 2080193)
-    win32gui.SendMessage(qq, 770, 0, 0)
+    # win32gui.SendMessage(qq, 258, 22, 2080193)
+    # win32gui.SendMessage(qq, 770, 0, 0)
+    gui.press(['ctrlleft', 'v'])
     time.sleep(0.8)
-    # 模拟按下回车键
-    win32gui.SendMessage(qq, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
-    win32gui.SendMessage(qq, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
+    # alt+enter 发送消息
+    # win32gui.SendMessage(qq, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
+    # win32gui.SendMessage(qq, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
+    gui.press(['altright', 'enter'])
     if save_log:
         cor = conn.cursor()
         cor.execute("insert into 消息发送日志(接收人,消息) values(%s,%s)", (to_who, msg))
