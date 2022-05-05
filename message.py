@@ -30,8 +30,8 @@ def send_qq(to_who, msg, save_log=True):
     # 投递剪贴板消息到QQ窗体
     gui.hotkey('ctrlleft', 'v')
     time.sleep(0.8)
-    # alt+enter 发送消息
-    gui.hotkey('altright', 'enter')
+    # ctrl + enter 发送消息
+    gui.hotkey('ctrlleft', 'enter')
     if save_log:
         cor = conn.cursor()
         cor.execute("insert into 消息发送日志(接收人,消息) values(%s,%s)", (to_who, msg))
