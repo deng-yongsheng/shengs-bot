@@ -47,9 +47,10 @@ def log(receiver: str, message: str):
     :param message: 消息内容
     :return:
     """
-    with db.session.begin():
-        log_record = Log(receiver=receiver, message=message)
-        db.session.add(log_record)
+    # with db.session.begin():
+    log_record = Log(receiver=receiver, message=message)
+    db.session.add(log_record)
+    db.session.commit()
 
 
 def class_finished(class_: Clas):
@@ -58,9 +59,10 @@ def class_finished(class_: Clas):
     :param class_:
     :return:
     """
-    with db.session.begin():
-        finish_record = Finish(class_id=class_.class_id)
-        db.session.add(finish_record)
+    # with db.session.begin():
+    finish_record = Finish(class_id=class_.class_id)
+    db.session.add(finish_record)
+    db.session.commit()
 
 
 def get_finished_class_list() -> List[Clas]:

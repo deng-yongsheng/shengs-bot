@@ -25,6 +25,7 @@ def send_qq_with_at(to_who, msg, at_list: List[Student] = None):
     :param at_list: 需要@的成员列表
     :return:
     """
+    print(f'sendto: {to_who}   msg:{msg}')
     # 将消息写到剪贴板
     set_text_to_clip(msg)
     # 获取qq群窗口句柄
@@ -39,6 +40,10 @@ def send_qq_with_at(to_who, msg, at_list: List[Student] = None):
         for stu in at_list[:20]:
             if stu.student_qq:
                 gui.write('@' + str(stu.student_qq))
+                time.sleep(0.3)
+                gui.press('enter')
+                time.sleep(0.2)
+    time.sleep(0.5)
     # ctrl + enter 发送消息
     gui.hotkey('ctrlleft', 'enter')
     # 记入日志
@@ -49,8 +54,15 @@ def send_qq_with_at(to_who, msg, at_list: List[Student] = None):
             for stu in at_list[split_start:split_start + 20]:
                 if stu.student_qq:
                     gui.write('@' + str(stu.student_qq))
+                    time.sleep(0.3)
+                    gui.press('enter')
+                    time.sleep(0.2)
+            time.sleep(0.5)
             # 发送消息
-            gui.hotkey('ctrlleft', 'enter')
+            gui.hotkey('alt', 's')
+            # 再尝试发送一次
+            time.sleep(0.5)
+            gui.hotkey('alt', 's')
 
 
 def open_all_windows():

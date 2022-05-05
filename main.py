@@ -21,8 +21,8 @@ if __name__ == '__main__':
                 unreported_students = service.convert_numbers_to_students(unreported_numbers)
                 # 是否添加 可爱的xx
                 if_cute = '可爱' if len(unreported_numbers) <= 4 else ''
-                mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡"
-                print(mess)
+                mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡\n"
+                print(mess.replace('\n'))
                 # 发送消息
                 send_qq_with_at(to_who=clas.class_group_name, msg=mess, at_list=unreported_students)
             else:

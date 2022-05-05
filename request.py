@@ -12,10 +12,8 @@ def get_unreported(clas: Clas, dept='计算机学院'):
     :param dept:
     :return:
     """
-    date_time = datetime.now().strftime('%Y-%m-%d, %H:%M:%S')
     print('%s小one易健康打卡情况' % clas.class_name)
-    print(date_time)
-    print()
+    print(datetime.now().strftime('%Y-%m-%d, %H:%M:%S'))
     sess = requests.session()
     sess.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                   'Chrome/86.0.4240.111 Safari/537.36',
