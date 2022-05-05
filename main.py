@@ -1,117 +1,44 @@
 import time
-import requests
-import json
-from datetime import datetime
 import traceback
-from db import get_new_connection
-from message import open_all_windows, send_qq
 
-conn = get_new_connection()
-
-
-def get_unreported(token, team, dep="计算机学院"):
-    date_time = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
-    print("%s小one易健康打卡情况" % team)
-    print(date_time)
-    print()
-    sess = requests.session()
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                      "Chrome/86.0.4240.111 Safari/537.36",
-        "ncov-access-token": "%s" % token}
-    sess.headers = headers
-    # 获取未登录人员
-    request_parameter = {'department': '%s' % dep,
-                         'team': team,
-                         'date': '%s' % (time.strftime("%Y-%m-%d")),
-                         'sort': 'jobNumber',
-                         'offset': '0',
-                         'limit': '100'}
-    res = sess.get("https://www.ioteams.com/ncov/api/users/unReport/department", params=request_parameter)
-    if '403 Forbidden' in res.text:
-        return "token失效"
-    res_j = json.loads(res.text)
-    unreported_num = res_j["data"]["data"]["unReportCount"]
-    reported_num = res_j["data"]["data"]["reportCount"]
-    print("已打卡人数：", reported_num)
-    print("未打卡人数：", unreported_num)
-    if int(unreported_num) > 0:
-        if int(unreported_num) <= 4:
-            return ("请可爱的" + "、".join(map(lambda x: x["userName"], res_j["data"]["data"]["unReportUsers"]))
-                    + "尽快完成小one易健康打卡")
-        else:
-            return ("请" + "、".join(map(lambda x: x["userName"], res_j["data"]["data"]["unReportUsers"]))
-                    + "尽快完成小one易健康打卡")
-    else:
-        return "全员打卡完毕"
-
+import request
+import service
+import exceptions
+from message import open_all_windows, send_qq_with_at
 
 if __name__ == '__main__':
-    cursor = conn.cursor()
     # 打开所有的qq窗口
     open_all_windows()
-
-    cursor.execute("""
-    SELECT 班级表.id,班级表.`学院`,班级表.`班级`,班级表.`班级群名`,令牌表.token, 班级表.`联系人`
-    FROM 令牌表,班级表
-    WHERE 令牌表.`班级id`= 班级表.id 
-        and `班级表`.`不提醒` = 'No'
-        and 令牌表.id IN 
-            (SELECT MAX(id) FROM 令牌表
-            GROUP BY 班级id) 
-        and 班级表.id NOT IN
-            (select 班级id from 打卡完成记录 where 完成时间 IN 
-            (select max(完成时间) FROM 打卡完成记录 
-            WHERE to_days(NOW()) = TO_DAYS(完成时间) group by 班级id))
-    order by 班级表.id
-    """)
-    for item in cursor.fetchall():
+    # 遍历班级
+    for clas in service.get_class_to_prompt():
         print("*" * 40)
         try:
-            item_id, dep, team, qunming, token, admin = item
-            print(item)
-            mess = get_unreported(token, team, dep=dep)
-            if mess == "token失效":
+            print(clas.class_name)
+            # 获取未完成打卡成员学号列表
+            unreported_numbers = request.get_unreported(clas=clas)
+            if len(unreported_numbers) > 0:
+                # 将学号列表转学生信息列表
+                unreported_students = service.convert_numbers_to_students(unreported_numbers)
+                # 是否添加 可爱的xx
+                if_cute = '可爱' if len(unreported_numbers) <= 4 else ''
+                mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡"
                 print(mess)
-                cor = conn.cursor()
-                cor.execute("insert into 错误日志(摘要,内容) values(%s,%s)", (mess, team))
-                conn.commit()
-                print(f"{team}token失效，请班级管理员 {admin} 重新打开小one易并登录。")
-                send_qq(qunming, f"{team}token失效，请班级管理员 {admin} 重新打开小one易并登录。")
-            elif mess == "全员打卡完毕":
-                print(mess)
-                # 打卡完成记录
-                cor = conn.cursor()
-                cor.execute("insert into 打卡完成记录(班级id) select id from 班级表 WHERE 班级=%s", (team))
-                conn.commit()
+                # 发送消息
+                send_qq_with_at(to_who=clas.class_group_name, msg=mess, at_list=unreported_students)
             else:
-                print(f"发送消息:{qunming}", mess)
-                send_qq(qunming, mess)
+                # 记录班级打卡完成
+                print(f'{clas.class_name} 打卡完毕！')
+                service.class_finished(class_=clas)
+        except exceptions.TokenExpire:
+            mess = f'{clas.class_name}token失效，请班级管理员 {clas.token.admin_name} 重新打开小one易并登录。'
+            print(mess)
+            send_qq_with_at(clas.class_group_name)
         except Exception as e:
             print(e)
             print(traceback.format_exc())
-            cor = conn.cursor()
-            cor.execute("insert into 错误日志(摘要,内容) values(%s,%s)", (str(e), traceback.format_exc()))
-            conn.commit()
             continue
-
-    # 今天已经完成打卡的班级
-    cursor.execute("""
-    SELECT 班级表.id,班级表.`班级`,班级表.`班级群名`,令牌表.token 
-    FROM 令牌表,班级表
-    WHERE 令牌表.`班级id`= 班级表.id 
-        and 不提醒='No'
-        and 令牌表.id IN 
-            (SELECT MAX(id) FROM 令牌表
-            GROUP BY 班级id) 
-        and 班级表.id IN
-            (select 班级id from 打卡完成记录 where 完成时间 IN 
-            (select max(完成时间) FROM 打卡完成记录 
-            WHERE to_days(NOW()) = TO_DAYS(完成时间) group by 班级id))
-    """)
-    print("以下班级已经完成打卡，今天不再发送消息提醒：")
-    for item in cursor.fetchall():
-        item_id, team, qunming, token = item
-        print("\t" + team)
-
+    print('*' * 60)
+    print('以下班级已经完成打卡，今天不再发送消息提醒：')
+    for clas in service.get_finished_class_list():
+        print(clas)
     time.sleep(5)
