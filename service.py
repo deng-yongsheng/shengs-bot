@@ -1,12 +1,12 @@
-import unittest
 from typing import List
 
 from sqlalchemy import func
 from datetime import datetime
 import db
-from model import Finish, Student, Clas, Log
+from models import Finish, Student, Clas, Log
 
 student_info = None
+student_map = None
 
 
 def get_class_to_prompt() -> list:
@@ -29,7 +29,7 @@ def get_class_list() -> List[Clas]:
     return db.session.query(Clas).all()
 
 
-def get_student_info():
+def get_student_info() -> List[Student]:
     """
     获取学生信息列表
     :return:
@@ -63,13 +63,31 @@ def class_finished(class_: Clas):
         db.session.add(finish_record)
 
 
-class Test(unittest.TestCase):
+def get_finished_class_list() -> List[Clas]:
+    """
+    获取今天已经打卡完成了的班级
+    :return:
+    """
+    return db.session.query(Clas).join(Finish, Finish.class_id == Clas.class_id).filter(
+        func.to_days(Finish.time) == func.to_days(datetime.now())).all()
 
-    def test1(self):
-        print(get_class_to_prompt())
 
-    def test2(self):
-        print(get_student_info())
+def query_student_by_student_number(student_number) -> Student:
+    """
+    根据学号查询学生信息
+    :param student_number:
+    :return:
+    """
+    global student_map
+    if student_map is None:
+        student_map = dict(map(lambda x: (x.student_number, x), get_student_info()))
+    return student_map.get(student_number)
 
-    def test3(self):
-        log(receiver='测试', message='测试消息')
+
+def convert_numbers_to_students(numbers) -> List[Student]:
+    """
+    将学号列表转换为学生信息列表
+    :param numbers:
+    :return:
+    """
+    return [query_student_by_student_number(n) for n in numbers]
