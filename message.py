@@ -4,24 +4,27 @@ import time
 import pyautogui as gui
 import pyperclip as p
 
-from db import get_new_connection
-
-conn = get_new_connection()
+import service
 
 
-def set_text_to_clip(string):
-    """设置剪贴板文本"""
-    p.copy(string)
+def set_text_to_clip(msg_to_clip):
+    """
+    设置剪贴板文本
+    :param msg_to_clip:
+    :return:
+    """
+    p.copy(msg_to_clip)
 
 
-def send_qq(to_who, msg, save_log=True):
-    global conn
+def send_qq_with_at(to_who, msg, save_log=True):
+    """
+    发送qq群消息，并自动@
+    :param to_who:
+    :param msg:
+    :param save_log:
+    :return:
+    """
     print("sendto:%s,%s" % (to_who, msg))
-    """
-    发送qq消息
-    to_who：qq消息接收人
-    msg：需要发送的消息
-    """
     # 将消息写到剪贴板
     set_text_to_clip(msg)
     # 获取qq窗口句柄
@@ -34,9 +37,8 @@ def send_qq(to_who, msg, save_log=True):
     win32gui.SendMessage(qq, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
     win32gui.SendMessage(qq, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
     if save_log:
-        cor = conn.cursor()
-        cor.execute("insert into 消息发送日志(接收人,消息) values(%s,%s)", (to_who, msg))
-        conn.commit()
+        # 发送消息记入日志
+        service.log(receiver=to_who, message=msg)
 
 
 def open_all_windows():
@@ -44,18 +46,19 @@ def open_all_windows():
     打开所有的qq群对话框
     :return:
     """
-    global conn
-    cursor = conn.cursor()
-    cursor.execute("SELECT 班级群名,班群群号 FROM 班级表 where 班级群名 is not null and 班群群号 is not null and 不提醒='No'")
+    # 获取已经打开的窗口列表
     opened_window_list = gui.getAllTitles()
+    # 获取QQ主窗体的句柄
     qqh = gui.getWindowsWithTitle("QQ")[0]
-    for group_name, group_number in cursor.fetchall():
-        if group_name not in opened_window_list:
-            print("打开窗口", group_name, group_number)
+    # 遍历班级列表
+    for clas in service.get_class_list():
+        # 检查没有打开的窗口
+        if clas.class_group_name not in opened_window_list:
+            print("打开窗口", clas.class_group_name, clas.class_group_number)
             qqh.activate()
             time.sleep(1)
             gui.press("backspace")
-            gui.typewrite(group_number)
+            gui.typewrite(clas.class_group_number, interval=0.25)
             time.sleep(2)
             gui.press("enter")
             time.sleep(2)
