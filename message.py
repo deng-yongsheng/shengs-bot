@@ -1,8 +1,11 @@
+import math
 import time
+from typing import List
 import pyautogui as gui
 import pyperclip as p
 
 import service
+from model import Student
 
 
 def set_text_to_clip(msg_to_clip):
@@ -14,14 +17,14 @@ def set_text_to_clip(msg_to_clip):
     p.copy(msg_to_clip)
 
 
-def send_qq(to_who, msg, save_log=True):
+def send_qq_with_at(to_who, msg, at_list: List[Student] = None):
     """
-    发送qq消息
-    to_who：qq消息接收人
-    msg：需要发送的消息
+    发送qq消息，支持@功能
+    :param to_who：qq消息接收人
+    :param msg：需要发送的消息
+    :param at_list: 需要@的成员列表
+    :return:
     """
-    global conn
-    print("sendto:%s,%s" % (to_who, msg))
     # 将消息写到剪贴板
     set_text_to_clip(msg)
     # 获取qq群窗口句柄
@@ -30,12 +33,24 @@ def send_qq(to_who, msg, save_log=True):
     # 投递剪贴板消息到QQ窗体
     gui.hotkey('ctrlleft', 'v')
     time.sleep(0.8)
+    # @成员，每次最多@20个成员
+    # 先@前 20 个
+    if at_list is not None:
+        for stu in at_list[:20]:
+            if stu.student_qq:
+                gui.write('@' + str(stu.student_qq))
     # ctrl + enter 发送消息
     gui.hotkey('ctrlleft', 'enter')
-    if save_log:
-        cor = conn.cursor()
-        cor.execute("insert into 消息发送日志(接收人,消息) values(%s,%s)", (to_who, msg))
-        conn.commit()
+    # 记入日志
+    service.log(to_who, msg)
+    # @剩余成员
+    if at_list is not None and len(at_list) > 20:
+        for split_start in range(1, math.ceil(len(at_list) / 20)):
+            for stu in at_list[split_start:split_start + 20]:
+                if stu.student_qq:
+                    gui.write('@' + str(stu.student_qq))
+            # 发送消息
+            gui.hotkey('ctrlleft', 'enter')
 
 
 def open_all_windows():
@@ -55,7 +70,7 @@ def open_all_windows():
             qqh.activate()
             time.sleep(1)
             gui.press("backspace")
-            gui.typewrite(clas.class_group_number, interval=0.25)
+            gui.write(clas.class_group_number, interval=0.25)
             time.sleep(2)
             gui.press("enter")
             time.sleep(2)
