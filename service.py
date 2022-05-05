@@ -1,4 +1,6 @@
 import unittest
+from typing import List
+
 from sqlalchemy import func
 from datetime import datetime
 import db
@@ -17,6 +19,14 @@ def get_class_to_prompt() -> list:
                                      .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
                                      .subquery())
                 ).all()
+
+
+def get_class_list() -> List[Clas]:
+    """
+    获取班级列表
+    :return:
+    """
+    return db.session.query(Clas).all()
 
 
 def get_student_info():
