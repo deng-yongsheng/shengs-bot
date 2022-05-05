@@ -1,5 +1,3 @@
-import win32gui
-import win32con
 import time
 import pyautogui as gui
 import pyperclip as p
@@ -16,29 +14,28 @@ def set_text_to_clip(msg_to_clip):
     p.copy(msg_to_clip)
 
 
-def send_qq_with_at(to_who, msg, save_log=True):
+def send_qq(to_who, msg, save_log=True):
     """
-    发送qq群消息，并自动@
-    :param to_who:
-    :param msg:
-    :param save_log:
-    :return:
+    发送qq消息
+    to_who：qq消息接收人
+    msg：需要发送的消息
     """
+    global conn
     print("sendto:%s,%s" % (to_who, msg))
     # 将消息写到剪贴板
     set_text_to_clip(msg)
-    # 获取qq窗口句柄
-    qq = win32gui.FindWindow(None, to_who)
+    # 获取qq群窗口句柄
+    qq_group = gui.getWindowsWithTitle(to_who)[0]
+    qq_group.activate()
     # 投递剪贴板消息到QQ窗体
-    win32gui.SendMessage(qq, 258, 22, 2080193)
-    win32gui.SendMessage(qq, 770, 0, 0)
+    gui.hotkey('ctrlleft', 'v')
     time.sleep(0.8)
-    # 模拟按下回车键
-    win32gui.SendMessage(qq, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
-    win32gui.SendMessage(qq, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
+    # ctrl + enter 发送消息
+    gui.hotkey('ctrlleft', 'enter')
     if save_log:
-        # 发送消息记入日志
-        service.log(receiver=to_who, message=msg)
+        cor = conn.cursor()
+        cor.execute("insert into 消息发送日志(接收人,消息) values(%s,%s)", (to_who, msg))
+        conn.commit()
 
 
 def open_all_windows():
