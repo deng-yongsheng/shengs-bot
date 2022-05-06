@@ -35,7 +35,7 @@ if __name__ == '__main__':
     for auto_punch in tqdm(db.session.query(AutoPunch).filter(AutoPunch.skip == '否').all()):
         try:
             resp = check(auto_punch)
-            print('%-6s' % auto_punch.comment, resp)
+            print('\n%-6s' % auto_punch.comment, resp)
         except Exception:
             continue
     time.sleep(5)
