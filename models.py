@@ -45,6 +45,8 @@ class Counselor(Base):
     counselor_id = Column(INTEGER(11), primary_key=True)
     counselor_name = Column(CHAR(20), nullable=False)
     token_id = Column(ForeignKey('token.token_id'), index=True)
+    counselor_qq = Column(BIGINT(20))
+    counselor_qq_name = Column(CHAR(20))
 
     token = relationship('Token')
     classes = relationship('Clas', back_populates='counselor')
