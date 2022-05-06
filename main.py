@@ -6,9 +6,12 @@ import service
 import exceptions
 from message import open_all_windows, send_qq_with_at
 
-if __name__ == '__main__':
-    # 打开所有的qq窗口
-    open_all_windows()
+
+def alert_classes():
+    """
+    进行班级提醒
+    :return:
+    """
     # 遍历班级
     for clas in service.get_class_to_prompt():
         print("*" * 40)
@@ -22,7 +25,7 @@ if __name__ == '__main__':
                 # 是否添加 可爱的xx
                 if_cute = '可爱' if len(unreported_numbers) <= 4 else ''
                 mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡\n"
-                print(mess.replace('\n'))
+                print(mess.replace('\n', ''))
                 # 发送消息
                 send_qq_with_at(to_who=clas.class_group_name, msg=mess, at_list=unreported_students)
             else:
@@ -41,4 +44,22 @@ if __name__ == '__main__':
     print('以下班级已经完成打卡，今天不再发送消息提醒：')
     for clas in service.get_finished_class_list():
         print(clas)
+
+
+def alert_counselors():
+    """
+    对辅导员进行提醒
+    :return:
+    """
+    pass
+
+
+if __name__ == '__main__':
+    # 打开所有的qq窗口
+    open_all_windows()
+    # 提醒班级
+    alert_classes()
+    # 提醒辅导员
+    alert_counselors()
+    # 延迟退出
     time.sleep(5)
