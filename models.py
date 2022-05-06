@@ -131,7 +131,7 @@ class AutoPunch(Base):
     """
     自动打卡表
     """
-    __tablename__ = 'punch'
+    __tablename__ = 'auto_punch'
 
     auto_punch_id = Column(INTEGER(11), primary_key=True)
     auto_punch_token = Column(CHAR(40), nullable=False, unique=True)
