@@ -1,7 +1,19 @@
 import unittest
 
+import db
 import request
 import service
+from models import Clas, Counselor
+
+
+class DBTest(unittest.TestCase):
+
+    def test1(self):
+        # 查询班级下对应的成员
+        class_list = db.session.query(Clas).all()
+        # 查询所有辅导员
+        counselor_list = db.session.query(Counselor).all()
+        return
 
 
 class ServiceTest(unittest.TestCase):

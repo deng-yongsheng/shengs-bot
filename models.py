@@ -1,4 +1,4 @@
-from sqlalchemy import CHAR, Column, DateTime, Enum, ForeignKey, Table, text, Text
+from sqlalchemy import CHAR, Column, DateTime, Enum, ForeignKey, Table, Text, text
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, TINYTEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -39,6 +39,20 @@ class Token(Base):
         return f"<Token {self.admin_name} {self.token}>"
 
 
+class Counselor(Base):
+    __tablename__ = 'counselor'
+
+    counselor_id = Column(INTEGER(11), primary_key=True)
+    counselor_name = Column(CHAR(20), nullable=False)
+    token_id = Column(ForeignKey('token.token_id'), index=True)
+
+    token = relationship('Token')
+    classes = relationship('Clas', back_populates='counselor')
+
+    def __repr__(self):
+        return f"<辅导员 {self.counselor_name}>"
+
+
 class Clas(Base):
     """
     班级信息表
@@ -48,14 +62,18 @@ class Clas(Base):
     class_id = Column(INTEGER(11), primary_key=True, autoincrement=True)
     class_name = Column(CHAR(20), nullable=False)
     token_id = Column(ForeignKey('token.token_id'), nullable=False, index=True)
+    counselor_id = Column(ForeignKey('counselor.counselor_id'), index=True)
     class_group_name = Column(CHAR(50), nullable=False)
     class_group_number = Column(CHAR(50), nullable=False)
     not_prompt = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
+    cube_id = Column(INTEGER(11))
 
+    counselor = relationship('Counselor', back_populates='classes', uselist=False)
+    students = relationship('Student', back_populates='_class')
     token = relationship('Token')
 
     def __repr__(self):
-        return f"<Class {self.class_name}>"
+        return f"<班级 {self.class_name} >"
 
 
 class Finish(Base):
@@ -84,8 +102,9 @@ class Student(Base):
     class_id = Column(ForeignKey('class.class_id'), index=True)
     student_name = Column(CHAR(10), nullable=False)
     student_qq = Column(BIGINT(20))
+    cube_id = Column(INTEGER(11))
 
-    _class = relationship('Clas')
+    _class = relationship('Clas', back_populates='students', uselist=False)
 
     def __repr__(self):
         return f"<Student {self.student_name}>"
@@ -101,3 +120,6 @@ class Log(Base):
     receiver = Column(TINYTEXT, nullable=False)
     message = Column(Text, nullable=False)
     time = Column(DateTime, nullable=False, server_default=text("current_timestamp()"))
+
+    def __repr__(self):
+        return f"<日志 {self.time} {self.receiver}>"
