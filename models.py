@@ -125,3 +125,15 @@ class Log(Base):
 
     def __repr__(self):
         return f"<日志 {self.time} {self.receiver}>"
+
+
+class AutoPunch(Base):
+    """
+    自动打卡表
+    """
+    __tablename__ = 'punch'
+
+    auto_punch_id = Column(INTEGER(11), primary_key=True)
+    auto_punch_token = Column(CHAR(40), nullable=False, unique=True)
+    comment = Column(CHAR(40), nullable=False)
+    skip = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
