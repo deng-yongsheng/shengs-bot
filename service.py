@@ -86,13 +86,24 @@ def query_student_by_student_number(student_number) -> Student:
     return student_map.get(student_number)
 
 
-def convert_numbers_to_students(numbers) -> List[Student]:
+def convert_one_records_to_students(one_records: List) -> List[Student]:
     """
     将学号列表转换为学生信息列表
-    :param numbers:
+    :param one_records:
     :return:
     """
-    return [query_student_by_student_number(n) for n in numbers]
+    res = []
+    for record in one_records:
+        # 查询数据库中的记录，主要是用来获取对应的qq号码
+        db_record = query_student_by_student_number(int(record['jobNumber']))
+        if db_record is None:
+            # 如果查询不到对应的记录，则使用小one易打卡中的姓名
+            # 密码字段为空
+            db_record = Student()
+            db_record.student_number = record['jobNumber']
+            db_record.student_name = record['userName']
+        res.append(db_record)
+    return res
 
 
 def get_cube_classes() -> List[Clas]:

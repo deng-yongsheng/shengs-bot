@@ -18,15 +18,18 @@ def alert_classes(debug=False):
         try:
             print(clas.class_name)
             # 获取未完成打卡成员学号列表
-            unreported_numbers = request.one.get_unreported(clas=clas)
-            if len(unreported_numbers) > 0:
+            unreported_records = request.one.get_unreported(clas=clas)
+            if len(unreported_records) > 0:
                 # 将学号列表转学生信息列表
-                unreported_students = service.convert_numbers_to_students(unreported_numbers)
+                unreported_students = service.convert_one_records_to_students(unreported_records)
                 # 是否添加 可爱的xx
-                if_cute = '可爱' if len(unreported_numbers) <= 4 else ''
-                mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡\n"
-                for stu in unreported_students:
-                    mess += f'[CQ:at,qq={stu.student_qq}]'
+                if_cute = '可爱' if len(unreported_records) <= 4 else ''
+                mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡"
+                if unreported_students[0].student_qq is not None:
+                    mess += '\n'
+                    for stu in unreported_students:
+                        if stu.student_qq is not None:
+                            mess += f'[CQ:at,qq={stu.student_qq}]'
                 print(mess.replace('\n', ''))
                 # 发送消息
                 if not debug:

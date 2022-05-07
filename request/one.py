@@ -32,5 +32,5 @@ def get_unreported(clas: Clas, dept='计算机学院'):
             raise TokenExpire()
         else:
             res_j = res.json()
-            res.close()
-            return list(map(lambda x: int(x['jobNumber']), res_j['data']['data']['unReportUsers']))
+            return res_j['data']['data']['unReportUsers']
+

@@ -59,7 +59,7 @@ class RequestTest(unittest.TestCase):
             print('*' * 30)
             print(clas.class_name)
             un_reported = request.one.get_unreported(clas)
-            student_list = service.convert_numbers_to_students(un_reported)
+            student_list = service.convert_one_records_to_students(un_reported)
             print(student_list)
 
     def test3(self):
