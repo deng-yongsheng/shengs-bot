@@ -78,4 +78,4 @@ class MessageTest(unittest.TestCase):
 class AlertTest(unittest.TestCase):
 
     def test1(self):
-        one.alert_classes(debug=True)
+        one.one_alert_class(debug=True)

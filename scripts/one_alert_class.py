@@ -7,7 +7,7 @@ import exceptions
 from message import send_group_msg
 
 
-def alert_classes(debug=False):
+def one_alert_class(debug=False):
     """
     进行班级提醒
     :return:
@@ -52,11 +52,3 @@ def alert_classes(debug=False):
     print('以下班级已经完成打卡，今天不再发送消息提醒：')
     for clas in service.get_finished_class_list():
         print(clas)
-
-
-def alert_counselors():
-    """
-    对辅导员进行提醒
-    :return:
-    """
-    pass
