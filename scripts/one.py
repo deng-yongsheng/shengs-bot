@@ -1,9 +1,10 @@
 import traceback
+from tqdm import tqdm
 
 import request
 import service
 import exceptions
-from message import send_qq_with_at
+from message import send_group_msg
 
 
 def alert_classes(debug=False):
@@ -12,7 +13,7 @@ def alert_classes(debug=False):
     :return:
     """
     # 遍历班级
-    for clas in service.get_class_to_prompt():
+    for clas in tqdm(service.get_class_to_prompt()):
         print("*" * 40)
         try:
             print(clas.class_name)
@@ -24,10 +25,12 @@ def alert_classes(debug=False):
                 # 是否添加 可爱的xx
                 if_cute = '可爱' if len(unreported_numbers) <= 4 else ''
                 mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡\n"
+                for stu in unreported_students:
+                    mess += f'[CQ:at,qq={stu.student_qq}]'
                 print(mess.replace('\n', ''))
                 # 发送消息
                 if not debug:
-                    send_qq_with_at(to_who=clas.class_group_name, msg=mess, at_list=unreported_students)
+                    send_group_msg(clas.class_group_number, mess)
             else:
                 # 记录班级打卡完成
                 print(f'{clas.class_name} 打卡完毕！')
@@ -37,7 +40,7 @@ def alert_classes(debug=False):
             mess = f'{clas.class_name}token失效，请班级管理员 {clas.token.admin_name} 重新打开小one易并登录。'
             print(mess)
             if not debug:
-                send_qq_with_at(clas.class_group_name, msg=mess)
+                send_group_msg(clas.class_group_number, mess)
         except Exception as e:
             print(e)
             print(traceback.format_exc())
