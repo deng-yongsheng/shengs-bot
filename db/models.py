@@ -137,3 +137,29 @@ class AutoPunch(Base):
     auto_punch_token = Column(CHAR(40), nullable=False, unique=True)
     comment = Column(CHAR(40), nullable=False)
     skip = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
+
+
+class CubePunchState(Base):
+    """
+    班级魔方考勤状态枚举
+    """
+    __tablename__ = 'cube_punch_state'
+
+    cube_punch_state_id = Column(INTEGER(11), primary_key=True)
+    cube_punch_state_name = Column(CHAR(10), nullable=False)
+
+
+class CubeAutoPunch(Base):
+    """
+    班级魔方自动标记
+    """
+    __tablename__ = 'cube_auto_punch'
+
+    id = Column(INTEGER(11), primary_key=True)
+    student_number = Column(ForeignKey('students.student_number'), nullable=False, index=True)
+    cube_punch_state_id = Column(ForeignKey('cube_punch_state.cube_punch_state_id'), nullable=False, index=True)
+    skip = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
+    comment = Column(CHAR(10), nullable=False)
+
+    cube_punch_state: CubePunchState = relationship('CubePunchState')
+    student: Student = relationship('Student')

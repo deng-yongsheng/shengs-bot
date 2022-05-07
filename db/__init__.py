@@ -1,2 +1,2 @@
 from .db import session
-from .models import Token, Counselor, Clas, Finish, Student, Log, AutoPunch
+from .models import Token, Counselor, Clas, Finish, Student, Log, AutoPunch, CubePunchState, CubeAutoPunch
