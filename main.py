@@ -33,9 +33,10 @@ def alert_classes():
                 print(f'{clas.class_name} 打卡完毕！')
                 service.class_finished(class_=clas)
         except exceptions.TokenExpire:
+            # 提醒对应班级token失效
             mess = f'{clas.class_name}token失效，请班级管理员 {clas.token.admin_name} 重新打开小one易并登录。'
             print(mess)
-            send_qq_with_at(clas.class_group_name)
+            send_qq_with_at(clas.class_group_name, msg=mess)
         except Exception as e:
             print(e)
             print(traceback.format_exc())
