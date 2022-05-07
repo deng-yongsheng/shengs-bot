@@ -2,9 +2,7 @@ import unittest
 
 import db
 from message import send_private_msg, send_group_msg
-from scripts import one
-import request
-import service
+import one
 from db import Clas, Counselor, Finish
 
 
@@ -36,34 +34,34 @@ class DBTest(unittest.TestCase):
 class ServiceTest(unittest.TestCase):
 
     def test1(self):
-        print(service.get_class_to_prompt())
+        print(one.service.get_class_to_prompt())
 
     def test2(self):
-        print(service.get_student_info())
+        print(one.service.get_student_info())
 
     def test3(self):
-        service.log(receiver='测试', message='测试消息')
+        one.service.log(receiver='测试', message='测试消息')
 
 
 class RequestTest(unittest.TestCase):
 
     def test1(self):
-        for clas in service.get_class_to_prompt():
+        for clas in one.service.get_class_to_prompt():
             print('*' * 30)
             print(clas.class_name)
-            un_reported = request.one.get_unreported(clas)
+            un_reported = one.request.get_unreported(clas)
             print(un_reported)
 
     def test2(self):
-        for clas in service.get_class_list():
+        for clas in one.service.get_class_list():
             print('*' * 30)
             print(clas.class_name)
-            un_reported = request.one.get_unreported(clas)
-            student_list = service.convert_one_records_to_students(un_reported)
+            un_reported = one.request.get_unreported(clas)
+            student_list = one.service.convert_one_records_to_students(un_reported)
             print(student_list)
 
     def test3(self):
-        print(service.get_finished_class_list())
+        print(one.service.get_finished_class_list())
 
 
 class MessageTest(unittest.TestCase):
@@ -75,7 +73,8 @@ class MessageTest(unittest.TestCase):
         send_group_msg('569525430', '[CQ:at,qq=1596953204]')
 
 
-class AlertTest(unittest.TestCase):
+class CubeAlertTest(unittest.TestCase):
 
     def test1(self):
-        one.one_alert_class(debug=True)
+        import cube
+        cube.alert_class(debug=False)

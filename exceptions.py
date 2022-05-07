@@ -14,3 +14,12 @@ class MessageSendError(Exception):
 
     def __init__(self, msg):
         self.msg = msg
+
+
+class StudentNotInDatabase(Exception):
+    """
+    数据库中没有对应学生的记录
+    """
+
+    def __init__(self, msg):
+        self.msg = msg
