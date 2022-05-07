@@ -1,7 +1,7 @@
 from tqdm import tqdm
 
 import db
-import request.cube as cube
+from . import request
 
 
 def auto_punch(punch_url):
@@ -14,7 +14,7 @@ def auto_punch(punch_url):
         auto_punch_record: db.CubeAutoPunch
         try:
             if auto_punch_record.skip == '否':
-                cube.set_punch_state(punch_url, auto_punch_record)
+                request.set_punch_state(punch_url, auto_punch_record)
         except Exception as e:
             print('打卡状态修改失败')
             print(e)
@@ -22,6 +22,6 @@ def auto_punch(punch_url):
 
 if __name__ == '__main__':
     print('修改打卡状态')
-    punch_list = cube.get_cur_punch_url()
-    for punch_url in punch_list:
-        auto_punch(punch_url)
+    punch_list = request.get_cur_punch_url()
+    for i_punch_url in punch_list:
+        auto_punch(i_punch_url)

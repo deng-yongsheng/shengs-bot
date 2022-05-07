@@ -1,19 +1,14 @@
-import unittest
-
-import request
 import service
-import exceptions
-from message import send_qq_with_at
-import request
+from . import request
 
 
-def alert_classes():
+def cube_alert_class():
     """
     班级魔方考勤提醒
     :return:
     """
     # 获取打卡列表
-    punch_list = request.cube.get_cur_punch_url()
+    punch_list = request.get_cur_punch_url()
     punch_list = [
         'http://www.banjimofang.com/teacher/course/13709/punch/result/791738/recent'
     ]
@@ -23,7 +18,7 @@ def alert_classes():
             # 获取请假学生名单
             qingjia_list = punch_url
             # 读取没有打卡的学生名单
-            data = request.cube.get_unpunched_students(punch_url)
+            data = request.get_unpunched_students(punch_url)
             # class_unreport_list = {'18软件工程1班': [],
             #                        '18软件工程2班': [],
             #                        '19计科1班': [],
@@ -45,13 +40,5 @@ def alert_classes():
                         qun_name = class_to_qun_name(i)
                         print(i, tixing)
                         # send_qq(qun_name, tixing)
-
-
     else:
         print('当前无打卡，退出程序')
-
-
-class Test(unittest.TestCase):
-
-    def test1(self):
-        alert_classes()
