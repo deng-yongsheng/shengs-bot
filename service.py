@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import func
 from datetime import datetime
 import db
-from models import Finish, Student, Clas, Log
+from db import Finish, Student, Clas, Log
 
 student_info = None
 student_map = None
@@ -93,3 +93,11 @@ def convert_numbers_to_students(numbers) -> List[Student]:
     :return:
     """
     return [query_student_by_student_number(n) for n in numbers]
+
+
+def get_cube_classes() -> List[Clas]:
+    """
+    请求所有的班级魔方班级
+    :return:
+    """
+    return db.session.query(Clas).filter(Clas.cube_id.is_not(None)).all()
