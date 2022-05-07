@@ -1,7 +1,7 @@
 import time
 
 from message import open_all_windows
-import one
+from scripts import one
 
 if __name__ == '__main__':
     # 打开所有的qq窗口
