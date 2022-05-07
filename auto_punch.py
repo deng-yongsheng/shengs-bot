@@ -3,7 +3,7 @@ import requests
 import time
 from tqdm import tqdm
 import db
-from models import AutoPunch
+from db import AutoPunch
 
 
 def check(punch: AutoPunch):
