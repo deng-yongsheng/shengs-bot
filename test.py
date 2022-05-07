@@ -3,7 +3,7 @@ import unittest
 import db
 import request
 import service
-from models import Clas, Counselor
+from models import Clas, Counselor, Finish
 
 
 class DBTest(unittest.TestCase):
@@ -14,6 +14,21 @@ class DBTest(unittest.TestCase):
         # 查询所有辅导员
         counselor_list = db.session.query(Counselor).all()
         return
+
+    def test2(self):
+        # 查询今天打卡没有完成的班级
+        from sqlalchemy import func, and_
+        from datetime import datetime
+        unfinished = db.session.query(Clas, Finish) \
+            .outerjoin(Finish) \
+            .filter(func.to_days(Finish.time) == func.to_days(datetime.now())) \
+            .all()
+        # unfinished = db.session.query(Clas) \
+        #     .filter(Clas.class_id.not_in(db.session.query(Finish.class_id)
+        #                                  .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
+        #                                  .subquery())
+        #             ).all()
+        print(unfinished)
 
 
 class ServiceTest(unittest.TestCase):
