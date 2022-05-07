@@ -66,7 +66,7 @@ class Clas(Base):
     token_id = Column(ForeignKey('token.token_id'), nullable=False, index=True)
     counselor_id = Column(ForeignKey('counselor.counselor_id'), index=True)
     class_group_name = Column(CHAR(50), nullable=False)
-    class_group_number = Column(CHAR(50), nullable=False)
+    class_group_number = Column(BIGINT(20), nullable=False)
     not_prompt = Column(Enum('是', '否'), nullable=False, server_default=text("'否'"))
     cube_id = Column(INTEGER(11))
 
