@@ -1,13 +1,13 @@
 import traceback
 from tqdm import tqdm
 
-import request
-import service
+from . import service
+from . import request
 import exceptions
 from message import send_group_msg
 
 
-def one_alert_class(debug=False):
+def alert_class(debug=False):
     """
     进行班级提醒
     :return:
@@ -18,7 +18,7 @@ def one_alert_class(debug=False):
         try:
             print(clas.class_name)
             # 获取未完成打卡成员学号列表
-            unreported_records = request.one.get_unreported(clas=clas)
+            unreported_records = request.get_unreported(clas=clas)
             if len(unreported_records) > 0:
                 # 将学号列表转学生信息列表
                 unreported_students = service.convert_one_records_to_students(unreported_records)

@@ -1,7 +1,7 @@
 from typing import List
-
 from sqlalchemy import func
 from datetime import datetime
+
 import db
 from db import Finish, Student, Clas, Log
 
@@ -104,11 +104,3 @@ def convert_one_records_to_students(one_records: List) -> List[Student]:
             db_record.student_name = record['userName']
         res.append(db_record)
     return res
-
-
-def get_cube_classes() -> List[Clas]:
-    """
-    请求所有的班级魔方班级
-    :return:
-    """
-    return db.session.query(Clas).filter(Clas.cube_id.is_not(None)).all()
