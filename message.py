@@ -4,7 +4,7 @@ import pyperclip
 import pyautogui
 
 import service
-from models import Student
+from db import Student
 
 
 def set_text_to_clip(msg_to_clip):

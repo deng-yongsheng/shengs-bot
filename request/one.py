@@ -2,7 +2,7 @@ from datetime import datetime
 import requests
 
 from exceptions import TokenExpire
-from models import Clas
+from db import Clas
 
 
 def get_unreported(clas: Clas, dept='计算机学院'):
