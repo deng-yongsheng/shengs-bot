@@ -3,7 +3,6 @@ from typing import List
 from db import Clas, Student
 from message import message
 from . import request
-from . import service
 
 
 def alert_class(debug=False):
@@ -36,10 +35,3 @@ def alert_class(debug=False):
                     message.send_group_msg(clas.class_group_number, mess)
     else:
         print('当前无打卡，退出程序')
-
-
-def update_student_info():
-    """
-    更新学生信息
-    """
-    pass
