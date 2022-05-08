@@ -1,5 +1,6 @@
-pyautogui==0.9.53
-pyperclip==1.8.2
+beautifulsoup4==4.11.1
+click==7.1.2
 requests==2.25.1
+schedule==1.1.0
 SQLAlchemy==1.4.7
 tqdm==4.59.0
