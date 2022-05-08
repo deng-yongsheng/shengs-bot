@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import datetime
 import time
 from typing import List
