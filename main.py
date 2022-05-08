@@ -73,9 +73,9 @@ def punch():
 @one.command()
 def alert():
     """
-    小one易打卡
+    小one易打卡提醒
     """
-    click.echo('小one易打卡')
+    click.echo('小one易打卡提醒')
     p_one.alert_class()
 
 
