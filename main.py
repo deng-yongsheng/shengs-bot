@@ -37,16 +37,17 @@ def schedule_tasks():
     配置定时任务
     """
     click.echo('配置定时任务')
-    # 提醒班级群小one易打卡
+    # 班级群 班级魔方打卡
     for t in gen_time_str_list(datetime.time(20, 00), datetime.time(23, 40), datetime.timedelta(minutes=15)):
-        schedule.every().days.at(t).do(p_one.alert_class, False)
-    # 提醒班级群班级魔方打卡
-    for t in gen_time_str_list(datetime.time(8, 00), datetime.time(22, 00), datetime.timedelta(minutes=60)):
         schedule.every().days.at(t).do(p_cube.alert_class, False)
+    # 班级群 小one易打卡
+    for t in gen_time_str_list(datetime.time(8, 00), datetime.time(22, 00), datetime.timedelta(minutes=60)):
+        schedule.every().days.at(t).do(p_one.alert_class, False)
     # 小one易自动打卡
     schedule.every().days.at('07:40').do(p_one.auto_punch)
     # 班级魔方自动打卡
-    schedule.every().days.at('08:40').do(p_cube.auto_punch)
+    schedule.every().days.at('20:15').do(p_cube.auto_punch)
+    schedule.every().days.at('20:40').do(p_cube.auto_punch)
     all_jobs = schedule.get_jobs()
     print(all_jobs)
     while True:
