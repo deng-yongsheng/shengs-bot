@@ -28,6 +28,7 @@ sess = generate_session()
 def get_cur_punch_url_list() -> list:
     """
     获取当前的所有打卡链接
+    :return:
     """
     res = sess.get('https://k8n.cn/teacher/course/13709/punch/')
     soup = BeautifulSoup(res.text, features='lxml')
@@ -39,6 +40,8 @@ def get_cur_punch_url_list() -> list:
 def get_leave(url: str) -> set:
     """
     获取请假且离校人员名单
+    :param url:
+    :return:
     """
     res = sess.get(url)
     json_str_res = re.search(r'(?<=leaving_students = )\[.*\](?=;)', res.text)
@@ -53,7 +56,8 @@ def get_leave(url: str) -> set:
 
 def get_student_info_list() -> dict:
     """
-    获取学信信息列表
+    从小one易获取学生信息列表
+    :return:
     """
     res = sess.get('https://www.banjimofang.com/teacher/course/13709/data/students')
     return res.json()
