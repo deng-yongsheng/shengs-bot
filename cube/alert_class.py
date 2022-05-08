@@ -12,7 +12,7 @@ def alert_class(debug=False):
     :return:
     """
     # 获取打卡列表
-    punch_list = request.get_cur_punch_url()
+    punch_list = request.get_cur_punch_url_list()
     if punch_list:
         print('当前有打卡')
         for punch_url in punch_list:

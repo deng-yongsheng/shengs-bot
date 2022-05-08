@@ -25,7 +25,7 @@ def generate_session() -> requests.Session:
 sess = generate_session()
 
 
-def get_cur_punch_url() -> list:
+def get_cur_punch_url_list() -> list:
     """
     获取当前的所有打卡链接
     """
