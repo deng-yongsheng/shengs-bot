@@ -4,3 +4,4 @@ requests==2.25.1
 schedule==1.1.0
 SQLAlchemy==1.4.7
 tqdm==4.59.0
+pymysql==1.0.2
