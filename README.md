@@ -67,4 +67,4 @@ Usage: main.py COMMAND
 + `2020年11月28日` 项目首次上线
 + `2020年12月7日` 阿里云服务器ip被小one易官方封禁
 + `2021年2月23日` 使用自己的ProxmoxVE虚拟机重新上线
-+ `2022年5月5日` 项目大规模重构，使用sqlalchemy框架，增加@功能，改用[go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 进行消息收发，合并晚打卡提醒和小one易统计提醒。
++ `2022年5月5日` 项目重构，使用sqlalchemy框架，增加@功能，改用[go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 进行消息收发，合并晚打卡提醒和小one易统计提醒。
