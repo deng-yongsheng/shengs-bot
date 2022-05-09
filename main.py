@@ -117,4 +117,5 @@ def punch():
 
 
 if __name__ == '__main__':
-    cli()
+    process_message()
+    # cli()

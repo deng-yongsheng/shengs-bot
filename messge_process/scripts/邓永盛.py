@@ -4,9 +4,11 @@ from ..message_type import PrivateMessageReply, PrivateMessage
 
 @specified_private_message_handler(1596953204)
 def repeat(message: PrivateMessage):
-    print("脚本处理消息")
-    reply = PrivateMessageReply(reply=message.raw_message)
+    if message.raw_message == 'ping':
+        reply = PrivateMessageReply(reply='pong')
+    else:
+        reply = None
     return reply
 
 
-print("脚本被加载")
+print(__name__, "脚本被加载")

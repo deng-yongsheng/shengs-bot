@@ -172,3 +172,56 @@ class GroupMessage(MessageBase):
     def __repr__(self):
         un_return_message = self.message.replace('\n', ' ')
         return f"《群聊消息({self.sender_name}) in ({self.group_id})：{un_return_message}》"
+
+
+class MessageReplyBase:
+    """
+    消息回复基类
+    """
+    # 要回复的内容
+    reply: str
+    # 消息内容是否作为纯文本发送 ( 即不解析 CQ 码 ) , 只在 reply 字段是字符串时有效
+    auto_escape: bool
+
+    def __repr__(self):
+        return f"<消息回复 {self.reply}>"
+
+    @property
+    def json(self):
+        raise RuntimeError('必须重置此函数')
+
+
+class PrivateMessageReply(MessageReplyBase):
+    """
+    私聊消息回复
+    """
+
+    def __repr__(self):
+        return f"<私聊消息回复 {self.reply}>"
+
+    def __init__(self, reply: str = None, auto_escape: bool = False):
+        """
+        要回复的内容
+        :param reply:
+        :param auto_escape:
+        :return:
+        """
+        self.reply = reply
+        self.auto_escape = auto_escape
+
+    @property
+    def json(self):
+        return {'reply': self.reply, 'auto_escape': self.auto_escape}
+
+
+class GroupMessageReply(MessageReplyBase):
+    """
+    群聊消息回复
+    """
+
+    def __repr__(self):
+        return f"<群聊消息回复 {self.reply}>"
+
+    @property
+    def json(self):
+        return {'reply': self.reply, 'auto_escape': self.auto_escape}

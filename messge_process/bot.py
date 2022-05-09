@@ -1,5 +1,4 @@
 from typing import List, Union
-
 from . import message_type
 
 # 群消息 通用 处理函数列表
@@ -72,7 +71,7 @@ def specified_private_message_handler(qq_number: Union[int, List[int]] = None):
     return wrapper
 
 
-def handle_group_message(group_message: message_type.GroupMessage) -> message_type.GroupMessageReply:
+def handle_group_message(group_message: message_type.GroupMessage):
     """
     处理群消息
     :param group_message:
@@ -80,7 +79,8 @@ def handle_group_message(group_message: message_type.GroupMessage) -> message_ty
     """
     # 优先处理特定群消息
     if group_message.group_id in specified_group_handle_dict:
-        return specified_group_handle_dict[group_message.group_id](group_message)
+        group_reply = specified_group_handle_dict[group_message.group_id](group_message)
+        return group_reply
     else:
         for group_handle in common_group_handle_list:
             group_reply = group_handle(group_message)
@@ -88,15 +88,16 @@ def handle_group_message(group_message: message_type.GroupMessage) -> message_ty
                 return group_reply
 
 
-def handle_private_message(private_message: message_type.PrivateMessage) -> message_type.PrivateMessageReply:
+def handle_private_message(private_message: message_type.PrivateMessage):
     """
     处理私聊
     :param private_message:
     :return:
     """
-    # 优先处理特定群消息
-    if private_message.sender.user_id in specified_group_handle_dict:
-        return specified_group_handle_dict[private_message.sender.user_id](private_message)
+    # 优先处理特定qq用户消息
+    if private_message.sender.user_id in specified_private_handle_dict:
+        private_reply = specified_private_handle_dict[private_message.sender.user_id](private_message)
+        return private_reply
     else:
         for private_handle in common_private_handle_list:
             private_reply = private_handle(private_message)
