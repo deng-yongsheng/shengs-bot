@@ -35,11 +35,10 @@ def auto_punch():
     小one易自动打卡
     """
     # 查询所有打卡记录
-    with db.DBSession() as session:
-        for auto_punch_record in tqdm(session.query(AutoPunch).filter(AutoPunch.skip == '否').all()):
-            try:
-                resp = check(auto_punch_record)
-                print('\n%-6s' % auto_punch_record.comment, resp)
-            except Exception:
-                continue
+    for auto_punch_record in tqdm(db.session.query(AutoPunch).filter(AutoPunch.skip == '否').all()):
+        try:
+            resp = check(auto_punch_record)
+            print('\n%-6s' % auto_punch_record.comment, resp)
+        except Exception:
+            continue
     time.sleep(5)

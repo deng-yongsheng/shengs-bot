@@ -14,12 +14,11 @@ def get_class_to_prompt() -> list:
     获取没有完成打卡的班级列表
     :return:
     """
-    with db.DBSession() as session:
-        return session.query(Clas) \
-            .filter(Clas.class_id.not_in(session.query(Finish.class_id)
-                                         .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
-                                         .subquery())
-                    ).all()
+    return db.session.query(Clas) \
+        .filter(Clas.class_id.not_in(db.session.query(Finish.class_id)
+                                     .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
+                                     .subquery())
+                ).all()
 
 
 def get_class_list() -> List[Clas]:
@@ -27,8 +26,7 @@ def get_class_list() -> List[Clas]:
     获取班级列表
     :return:
     """
-    with db.DBSession() as session:
-        return session.query(Clas).all()
+    return db.session.query(Clas).all()
 
 
 def get_student_info() -> List[Student]:
@@ -37,10 +35,9 @@ def get_student_info() -> List[Student]:
     :return:
     """
     global student_info
-    with db.DBSession() as session:
-        if student_info is None:
-            student_info = session.query(Student).all()
-        return student_info
+    if student_info is None:
+        student_info = db.session.query(Student).all()
+    return student_info
 
 
 def log(receiver: str, message: str):
@@ -50,10 +47,10 @@ def log(receiver: str, message: str):
     :param message: 消息内容
     :return:
     """
-    with db.DBSession() as session:
-        log_record = Log(receiver=receiver, message=message)
-        session.add(log_record)
-        session.commit()
+    # with db.session.begin():
+    log_record = Log(receiver=receiver, message=message)
+    db.session.add(log_record)
+    db.session.commit()
 
 
 def class_finished(class_: Clas):
@@ -62,10 +59,10 @@ def class_finished(class_: Clas):
     :param class_:
     :return:
     """
-    with db.DBSession() as session:
-        finish_record = Finish(class_id=class_.class_id)
-        session.add(finish_record)
-        session.commit()
+    # with db.session.begin():
+    finish_record = Finish(class_id=class_.class_id)
+    db.session.add(finish_record)
+    db.session.commit()
 
 
 def get_finished_class_list() -> List[Clas]:
@@ -73,9 +70,8 @@ def get_finished_class_list() -> List[Clas]:
     获取今天已经打卡完成了的班级
     :return:
     """
-    with db.DBSession() as session:
-        return session.query(Clas).join(Finish, Finish.class_id == Clas.class_id).filter(
-            func.to_days(Finish.time) == func.to_days(datetime.now())).all()
+    return db.session.query(Clas).join(Finish, Finish.class_id == Clas.class_id).filter(
+        func.to_days(Finish.time) == func.to_days(datetime.now())).all()
 
 
 def query_student_by_student_number(student_number) -> Student:
