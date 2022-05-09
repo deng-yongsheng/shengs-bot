@@ -10,8 +10,7 @@ def query_class_by_cube_id(cube_id: int) -> Clas:
     :param cube_id: 班级魔方id
     :return: 对应班级
     """
-    with db.DBSession() as session:
-        return session.query(Clas).filter(Clas.cube_id == int(cube_id)).one_or_none()
+    return db.session.query(Clas).filter(Clas.cube_id == int(cube_id)).one_or_none()
 
 
 def query_student_by_cube_id(cube_id: int) -> Student:
@@ -20,8 +19,7 @@ def query_student_by_cube_id(cube_id: int) -> Student:
     :param cube_id: 班级魔方id
     :return: 对应班级
     """
-    with db.DBSession() as session:
-        return session.query(Student).filter(Student.cube_id == int(cube_id)).one_or_none()
+    return db.session.query(Student).filter(Student.cube_id == int(cube_id)).one_or_none()
 
 
 def get_cube_classes() -> List[Clas]:
@@ -29,5 +27,4 @@ def get_cube_classes() -> List[Clas]:
     请求所有的班级魔方班级
     :return:
     """
-    with db.DBSession() as session:
-        return session.query(Clas).filter(Clas.cube_id.is_not(None)).all()
+    return db.session.query(Clas).filter(Clas.cube_id.is_not(None)).all()
