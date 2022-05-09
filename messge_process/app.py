@@ -1,45 +1,59 @@
-from flask import Flask, request, jsonify
-from . import configs, message_type
-from .exts import db
-from . import bot
-from .message_type import MessageReplyBase
-from .scripts.邓永盛 import *
+import json
 
-app = Flask(__name__)
-# 加载配置文件
-app.config.from_object(configs)
-# db绑定app
-db.init_app(app)
+from paho.mqtt.client import MQTTMessage
+
+import message
+from messge_process import message_type, bot
+from mqtt import connect_mqtt, topic
+from .scripts import 肖沫晔, 邓永盛
 
 
-def load_scripts():
-    import glob, os
-    current_path = os.path.basename(os.path.realpath(__file__))
-    for file in glob.glob(current_path + 'scripts/*.py'):
-        exec(file)
-
-
-@app.route('/', methods=["POST"])
-def post_data():
-    reply = ''
-    if request.json is not None:
-        if 'post_type' in request.json and request.json['post_type'] == 'message':
-            if request.json.get('message_type') == 'private':
+def on_message(client, userdata, msg: MQTTMessage):
+    """
+    处理mqtt消息
+    :param client:
+    :param userdata:
+    :param msg:
+    :return:
+    """
+    try:
+        res_j = json.loads(msg.payload)
+        if 'post_type' in res_j and res_j['post_type'] == 'message':
+            if res_j.get('message_type') == 'private':
                 # 私聊信息
-                p_message = message_type.PrivateMessage(request.json)
+                p_message = message_type.PrivateMessage(res_j)
                 print(p_message)
                 reply = bot.handle_private_message(p_message)
-            elif request.json.get('message_type') == 'group':
+                # 针对私聊消息进行回复
+                if reply is not None:
+                    message.send_private_msg(p_message.user_id, reply.reply)
+                    return
+            elif res_j.get('message_type') == 'group':
                 # 群聊信息
-                g_message = message_type.GroupMessage(request.json)
+                g_message = message_type.GroupMessage(res_j)
                 print(g_message)
                 reply = bot.handle_group_message(g_message)
+                # 针对群消息进行回复
+                if reply is not None:
+                    message.send_group_msg(g_message.group_id, reply.reply)
+                    return
             else:
                 # 其它类型的消息
-                print(request.json)
-    if reply is not None and isinstance(reply, MessageReplyBase):
-        return jsonify(reply.json)
-    else:
-        return "None"
+                # print(res_j)
+                pass
+    except json.JSONDecodeError:
+        print('mqtt消息不规范')
 
-# load_scripts()
+
+mqtt = connect_mqtt()
+mqtt.subscribe(topic)
+mqtt.on_message = on_message
+
+
+def run():
+    """
+    启动mqtt监听消息
+    :return:
+    """
+    # client.loop_start()
+    mqtt.loop_forever(timeout=1)

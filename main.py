@@ -62,9 +62,9 @@ def schedule_tasks():
 @cli.command()
 def process_message():
     """
-    接收机器人消息
+    接收处理机器人消息
     """
-    messge_process.app.run(host='0.0.0.0', port='5701')
+    messge_process.app.run()
 
 
 @cli.group()
@@ -125,6 +125,14 @@ def punch():
     """
     click.echo('班级魔方打卡')
     p_cube.auto_punch()
+
+
+@cli.command()
+def mqtt_server():
+    """
+    将消息转发到mqtt
+    """
+    forward.app.run(host='0.0.0.0', port='5701')
 
 
 if __name__ == '__main__':
