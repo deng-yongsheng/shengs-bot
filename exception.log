@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\Source_Code\PyCharm Project\邓永盛的机器人\exceptions.py", line 34, in wrapper
+    func(*args, **kwargs)
+  File "D:\Source_Code\PyCharm Project\邓永盛的机器人\one\alert_class.py", line 17, in alert_class
+    for clas in tqdm(service.get_class_to_prompt()):
+  File "D:\Source_Code\PyCharm Project\邓永盛的机器人\one\service.py", line 17, in get_class_to_prompt
+    with db.DBSession() as session:
+AttributeError: module 'db' has no attribute 'DBSession'

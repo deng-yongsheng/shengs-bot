@@ -89,7 +89,7 @@ class Student(Base):
     student_qq = Column(BIGINT(20))
     cube_id = Column(INTEGER(11))
 
-    _class = relationship('Clas', back_populates='students', uselist=False)
+    _class: Clas = relationship('Clas', back_populates='students', uselist=False)
 
     def __repr__(self):
         return f"<Student {self.student_name}>"

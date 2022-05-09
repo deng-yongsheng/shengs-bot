@@ -107,6 +107,14 @@ def alert():
     p_cube.alert_class()
 
 
+@one.command()
+def counselor():
+    """
+    向辅导员发送提醒消息
+    """
+    p_one.alert_counselor()
+
+
 @cube.command()
 def punch():
     """
@@ -117,5 +125,6 @@ def punch():
 
 
 if __name__ == '__main__':
-    process_message()
-    # cli()
+    # process_message()
+    # p_one.alert_counselor()
+    cli()

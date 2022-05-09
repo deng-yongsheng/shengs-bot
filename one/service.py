@@ -3,7 +3,7 @@ from sqlalchemy import func
 from datetime import datetime
 
 import db
-from db import Finish, Student, Clas, Log
+from db import Finish, Student, Clas, Log, Counselor
 
 student_info = None
 student_map = None
@@ -86,6 +86,15 @@ def query_student_by_student_number(student_number) -> Student:
     return student_map.get(student_number)
 
 
+def convert_student_numbers_to_students(student_numbers) -> List[Student]:
+    """
+    将学号转换为学生
+    :param student_numbers:
+    :return:
+    """
+    return db.session.query(Student).filter(Student.student_number.in_(student_numbers)).all()
+
+
 def convert_one_records_to_students(one_records: List) -> List[Student]:
     """
     将学号列表转换为学生信息列表
@@ -104,3 +113,12 @@ def convert_one_records_to_students(one_records: List) -> List[Student]:
             db_record.student_name = record['userName']
         res.append(db_record)
     return res
+
+
+def get_counselor_by_name(name) -> Counselor:
+    """
+    根据辅导员姓名查询对应辅导员
+    :param name:
+    :return:
+    """
+    return db.session.query(Counselor).filter(Counselor.counselor_name == name).one_or_none()
