@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import datetime
+import os
 import time
 from typing import List
 
@@ -40,15 +41,17 @@ def schedule_tasks():
     click.echo('配置定时任务')
     # 班级群 班级魔方打卡
     for t in gen_time_str_list(datetime.time(20, 00), datetime.time(23, 40), datetime.timedelta(minutes=15)):
-        schedule.every().days.at(t).do(p_cube.alert_class, False)
+        schedule.every().days.at(t).do(os.system, 'python3 main.py cube alert')
     # 班级群 小one易打卡
     for t in gen_time_str_list(datetime.time(8, 00), datetime.time(22, 00), datetime.timedelta(minutes=60)):
-        schedule.every().days.at(t).do(p_one.alert_class, False)
+        schedule.every().days.at(t).do(os.system, 'python3 main.py one alert')
+    # 小one易辅导员提醒
+    schedule.every().days.at('17:00').do(os.system, 'python3 main.py one counselor')
     # 小one易自动打卡
-    schedule.every().days.at('07:40').do(p_one.auto_punch)
+    schedule.every().days.at('07:40').do(os.system, 'python3 main.py one punch')
     # 班级魔方自动打卡
-    schedule.every().days.at('20:15').do(p_cube.auto_punch)
-    schedule.every().days.at('20:40').do(p_cube.auto_punch)
+    schedule.every().days.at('20:15').do(os.system, 'python3 main.py cube punch')
+    schedule.every().days.at('20:40').do(os.system, 'python3 main.py cube punch')
     all_jobs = schedule.get_jobs()
     print(all_jobs)
     while True:
