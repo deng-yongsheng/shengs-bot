@@ -6,23 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
-t_class_info = Table(
-    'class_info', metadata,
-    Column('class_id', INTEGER(11), server_default=text("'0'")),
-    Column('class_name', CHAR(20)),
-    Column('token_id', INTEGER(11)),
-    Column('token', CHAR(50))
-)
-
-t_student_info = Table(
-    'student_info', metadata,
-    Column('student_number', INTEGER(11)),
-    Column('class_id', INTEGER(11)),
-    Column('student_name', CHAR(10)),
-    Column('student_qq', BIGINT(20)),
-    Column('class_name', CHAR(20))
-)
-
 
 class Token(Base):
     """
