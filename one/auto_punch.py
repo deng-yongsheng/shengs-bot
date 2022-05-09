@@ -4,6 +4,7 @@ import time
 from tqdm import tqdm
 import db
 from db import AutoPunch
+from exceptions import exception_handler
 
 
 def check(punch: AutoPunch):
@@ -30,6 +31,7 @@ def check(punch: AutoPunch):
     return res.json()['msg']
 
 
+@exception_handler
 def auto_punch():
     """
     小one易自动打卡

@@ -1,9 +1,11 @@
 from tqdm import tqdm
 
 import db
+from exceptions import exception_handler
 from . import request
 
 
+@exception_handler
 def auto_punch(punch_url=None):
     """
     修改班级魔方打卡状态

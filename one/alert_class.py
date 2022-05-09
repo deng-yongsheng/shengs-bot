@@ -7,6 +7,7 @@ import exceptions
 from message import send_group_msg
 
 
+@exceptions.exception_handler
 def alert_class(debug=False):
     """
     进行班级提醒

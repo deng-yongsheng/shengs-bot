@@ -1,10 +1,12 @@
 from typing import List
 
 from db import Clas, Student
+from exceptions import exception_handler
 from message import message
 from . import request
 
 
+@exception_handler
 def alert_class(debug=False):
     """
     班级魔方考勤提醒
