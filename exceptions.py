@@ -1,3 +1,6 @@
+import datetime
+
+
 class TokenExpire(Exception):
     """
     token过期异常
@@ -36,7 +39,9 @@ def exception_handler(func):
             exception_info = traceback.format_exc()
             sys.stderr.write(exception_info)
             # 将错误写入文件
-            with open('exception.log', 'w', encoding='utf8') as f:
+            with open('exception.log', 'a+', encoding='utf8') as f:
+                f.write('*' * 20 + datetime.datetime.now().isoformat() + '*\n' * 20)
                 f.write(exception_info)
+                f.write('\n' * 3)
 
     return wrapper
