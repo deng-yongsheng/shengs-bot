@@ -146,3 +146,28 @@ class CubeAutoPunch(Base):
 
     cube_punch_state: CubePunchState = relationship('CubePunchState')
     student: Student = relationship('Student')
+
+
+class PrivateMessage(Base):
+    """
+    私聊消息
+    """
+    __tablename__ = 'private_message'
+
+    private_message_id = Column(INTEGER(11), primary_key=True)
+    qq_member = Column(BIGINT(20), nullable=False)
+    message_content = Column(Text, nullable=False)
+    message_time = Column(DateTime)
+
+
+class GroupMessage(Base):
+    """
+    群消息
+    """
+    __tablename__ = 'group_message'
+
+    group_message_id = Column(INTEGER(11), primary_key=True)
+    group_number = Column(BIGINT(20), nullable=False)
+    group_member_number = Column(BIGINT(20))
+    message_content = Column(Text)
+    message_time = Column(DateTime, server_default=text("current_timestamp()"))
