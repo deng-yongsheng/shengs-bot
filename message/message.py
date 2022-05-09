@@ -1,5 +1,3 @@
-import unittest
-
 import requests
 from . import config
 from exceptions import MessageSendError
@@ -22,6 +20,7 @@ def send_private_msg(user_id, message, group_id=None, auto_escape=False):
         'message': message,
         'auto_escape': auto_escape
     })
+    print('发送消息', res)
     if res.json()['status'] != 'ok':
         raise MessageSendError(res.text)
 
@@ -42,7 +41,6 @@ def send_group_msg(group_id, message, auto_escape=False):
         'message': message,
         'auto_escape': auto_escape
     })
+    print('发送群消息', res)
     if res.json()['status'] != 'ok':
         raise MessageSendError(res.text)
-
-
