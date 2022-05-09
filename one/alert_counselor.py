@@ -1,11 +1,12 @@
 from datetime import datetime
 
+import exceptions
 import message
-from exceptions import TokenExpire
 from one.request import get_unreported_by_token
 from one.service import get_counselor_by_name, convert_student_numbers_to_students
 
 
+@exceptions.exception_handler
 def get_one_report_for(counselor=None):
     """
     生成打卡报表
@@ -41,7 +42,7 @@ def get_one_report_for(counselor=None):
         # 发送私聊消息：名单
         mess = '\n'.join(mess_list)
         message.send_private_msg(counselor.counselor_qq, mess)
-    except TokenExpire:
+    except exceptions.TokenExpire:
         # 发送私聊消息：名单
         teacher_call = counselor.counselor_name[0] + '老师'
         mess = f"{teacher_call}：\n您的小one易登录会话过期，请重新登录微信小one易"
