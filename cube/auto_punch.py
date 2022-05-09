@@ -17,12 +17,14 @@ def auto_punch(punch_url=None):
         # 来自函数形参
         punch_url_list = [punch_url]
     print(f'共要进行{len(punch_url_list)}项打卡')
-    for punch_url in punch_url_list:
-        for auto_punch_record in tqdm(db.session.query(db.CubeAutoPunch).all()):
-            auto_punch_record: db.CubeAutoPunch
-            try:
-                if auto_punch_record.skip == '否':
-                    request.set_punch_state(punch_url, auto_punch_record)
-            except Exception as e:
-                print('打卡状态修改失败')
-                print(e)
+    with db.DBSession() as session:
+        for punch_url in punch_url_list:
+            # 遍历自动打卡记录
+            for auto_punch_record in tqdm(session.query(db.CubeAutoPunch).all()):
+                auto_punch_record: db.CubeAutoPunch
+                try:
+                    if auto_punch_record.skip == '否':
+                        request.set_punch_state(punch_url, auto_punch_record)
+                except Exception as e:
+                    print('打卡状态修改失败')
+                    print(e)

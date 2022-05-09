@@ -10,25 +10,29 @@ class DBTest(unittest.TestCase):
 
     def test1(self):
         # 查询班级下对应的成员
-        class_list = db.session.query(Clas).all()
-        # 查询所有辅导员
-        counselor_list = db.session.query(Counselor).all()
+        with db.DBSession() as session:
+            class_list = session.query(Clas).all()
+            # 查询所有辅导员
+            counselor_list = session.query(Counselor).all()
         return
 
     def test2(self):
         # 查询今天打卡没有完成的班级
         from sqlalchemy import func
         from datetime import datetime
-        # unfinished = db.session.query(Clas, Finish) \
-        #     .outerjoin(Finish) \
-        #     .filter(func.to_days(Finish.time) == func.to_days(datetime.now())) \
-        #     .all()
-        unfinished = db.session.query(Clas) \
-            .filter(Clas.class_id.not_in(db.session.query(Finish.class_id)
-                                         .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
-                                         .subquery())
-                    ).all()
-        print(unfinished)
+        with db.DBSession() as session:
+            unfinished = session.query(Clas) \
+                .filter(Clas.class_id.not_in(session.query(Finish.class_id)
+                                             .filter(func.to_days(Finish.time) == func.to_days(datetime.now()))
+                                             .subquery())
+                        ).all()
+            print(unfinished)
+
+    def test3(self):
+        # 将计科2班设置为打卡完毕
+        with db.DBSession() as session:
+            clas = session.query(Clas).filter(Clas.class_name == '19计科2班').one_or_none()
+            one.service.class_finished(clas)
 
 
 class ServiceTest(unittest.TestCase):
