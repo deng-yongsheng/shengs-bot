@@ -82,3 +82,17 @@ class CubeAlertTest(unittest.TestCase):
     def test1(self):
         import cube
         cube.alert_class(debug=False)
+
+
+class MessageClassTest(unittest.TestCase):
+
+    def test1(self):
+        # 测试私聊消息接收
+        from messge_process.message_type import PrivateMessage
+        msg = {'font': 0, 'message': 'hi', 'message_id': -1714586584, 'message_type': 'private',
+               'post_type': 'message',
+               'raw_message': 'hi', 'self_id': 481409014,
+               'sender': {'age': 0, 'nickname': 'null', 'sex': 'unknown', 'user_id': 1596953204},
+               'sub_type': 'friend', 'target_id': 481409014, 'time': 1652066601, 'user_id': 1596953204}
+        pmessage = PrivateMessage(msg=msg)
+        print(pmessage)

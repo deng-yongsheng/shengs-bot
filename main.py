@@ -8,6 +8,7 @@ import schedule
 
 import cube as p_cube
 import one as p_one
+import messge_process
 
 
 def gen_time_str_list(s_time: datetime.time, e_time: datetime.time, interval: datetime.timedelta) -> List[str]:
@@ -53,6 +54,14 @@ def schedule_tasks():
     while True:
         schedule.run_pending()
         time.sleep(1)
+
+
+@cli.command()
+def process_message():
+    """
+    接收机器人消息
+    """
+    messge_process.app.run(host='0.0.0.0', port='5701')
 
 
 @cli.group()
