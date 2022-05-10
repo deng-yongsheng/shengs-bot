@@ -8,7 +8,6 @@ import click
 import schedule
 
 import cube as p_cube
-import forward
 import one as p_one
 import messge_process
 
@@ -126,14 +125,6 @@ def punch():
     """
     click.echo('班级魔方打卡')
     p_cube.auto_punch()
-
-
-@cli.command()
-def mqtt_server():
-    """
-    将消息转发到mqtt
-    """
-    forward.app.run(host='0.0.0.0', port='5701')
 
 
 if __name__ == '__main__':
