@@ -24,7 +24,7 @@ def alert_class(debug=False):
                 # 将学号列表转学生信息列表
                 unreported_students = service.convert_one_records_to_students(unreported_records)
                 # 是否添加 可爱的xx
-                if_cute = '可爱' if len(unreported_records) <= 4 else ''
+                if_cute = '可爱的' if len(unreported_records) <= 4 else ''
                 mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, unreported_students)) + "尽快完成小one易健康打卡"
                 if unreported_students[0].student_qq is not None:
                     mess += '\n'

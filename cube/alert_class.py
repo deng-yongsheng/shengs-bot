@@ -23,7 +23,7 @@ def alert_class(debug=False):
                 clas: Clas
                 student_list: List[Student]
                 # 是否添加 可爱的xx
-                if_cute = '可爱' if len(student_list) <= 4 else ''
+                if_cute = '可爱的' if len(student_list) <= 4 else ''
                 mess = '请' + if_cute + '、'.join(map(lambda x: x.student_name, student_list)) + "尽快完成班级魔方考勤打卡"
                 if len(student_list) <= 20 and student_list[0].student_qq is not None:
                     mess += '\n'
