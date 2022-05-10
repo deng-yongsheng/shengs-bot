@@ -3,7 +3,8 @@ import json
 from paho.mqtt.client import MQTTMessage
 
 import message
-from messge_process import message_type, bot
+import message_type
+from bot_comm import bot
 from .mqtt import connect_mqtt, topic
 from .scripts import 肖沫晔, 邓永盛
 

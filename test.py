@@ -84,7 +84,7 @@ class MessageClassTest(unittest.TestCase):
 
     def test1(self):
         # 测试私聊消息接收
-        from messge_process.message_type import PrivateMessage
+        from message_type import PrivateMessage
         msg = {'font': 0, 'message': 'hi', 'message_id': -1714586584, 'message_type': 'private',
                'post_type': 'message',
                'raw_message': 'hi', 'self_id': 481409014,

@@ -1,5 +1,5 @@
 from typing import List, Union
-from . import message_type
+import message_type
 
 # 群消息 通用 处理函数列表
 common_group_handle_list = []
