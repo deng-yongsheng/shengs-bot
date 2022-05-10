@@ -1,6 +1,6 @@
 from_image = python
 target_name = mess-forward
-exec = docker exec -it $(target_name)
+exec = docker exec -it $(target_name) bash -c
 cp = docker cp
 expose = -p 5701:5701
 
@@ -8,9 +8,9 @@ expose = -p 5701:5701
 
 docker :
 	docker run -itd --name $(target_name) $(expose) $(from_image)
-	$(exec) mkdir /app
+	$(exec) "mkdir /app"
 	$(cp) ./ $(target_name):/app
-	$(exec) cd /app && pip3 install -r requirements.txt && pip3 uninstall  --no-input Flask  && pip3 install --no-input Flask
+	$(exec) "cd /app && pip3 install -r requirements.txt && pip3 uninstall  --no-input Flask  && pip3 install --no-input Flask"
 
 clean :
 	docker rm $(target_name)
