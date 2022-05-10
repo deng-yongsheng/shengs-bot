@@ -1,4 +1,5 @@
 FROM ubuntu
+EXPOSE 5701
 CMD mkdir /app
 WORKDIR /app
 COPY ./ /app/
