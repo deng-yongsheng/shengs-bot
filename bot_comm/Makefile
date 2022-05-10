@@ -1,5 +1,6 @@
 from_image = python
 target_name = bot-comm
+current_folder = bot_com
 exec = docker exec -it $(target_name) bash -c
 cp = docker cp
 
@@ -8,7 +9,8 @@ cp = docker cp
 docker :
 	docker run -itd --name $(target_name) $(from_image)
 	$(exec) "mkdir /app"
-	$(cp) ../ $(target_name):/app
+	cd .. && $(cp) ./ $(target_name):/app
+	cd $(current_folder)
 	$(exec) "cd /app && pip3 install -r requirements.txt"
 
 start :
