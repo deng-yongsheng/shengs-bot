@@ -10,7 +10,6 @@ docker :
 	docker run -itd --name $(target_name) $(from_image)
 	$(exec) "mkdir /app"
 	cd .. && $(cp) ./ $(target_name):/app
-	cd $(current_folder)
 	$(exec) "cd /app && pip3 install -r requirements.txt"
 
 start :
