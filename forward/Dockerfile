@@ -1,4 +1,4 @@
-FROM python3
+FROM python
 EXPOSE 5701
 CMD mkdir /app
 WORKDIR /app
