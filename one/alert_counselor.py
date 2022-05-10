@@ -38,7 +38,7 @@ def get_one_report_for(counselor=None):
             if stu_list is not None:
                 mess_list.append(f"{cls}：{'、'.join(map(lambda x: x.student_name, stu_list))}")
 
-        date_str = datetime.now().strftime("%Y-%m-%d") + '打卡未完成人员名单：'
+        date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '打卡未完成人员名单：'
         # 发送私聊消息：日期
         message.send_private_msg(counselor.counselor_qq, date_str)
         # 有人未完成打卡才发送消息
