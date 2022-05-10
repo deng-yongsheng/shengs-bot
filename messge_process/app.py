@@ -4,7 +4,7 @@ from paho.mqtt.client import MQTTMessage
 
 import message
 from messge_process import message_type, bot
-from mqtt import connect_mqtt, topic
+from .mqtt import connect_mqtt, topic
 from .scripts import 肖沫晔, 邓永盛
 
 
