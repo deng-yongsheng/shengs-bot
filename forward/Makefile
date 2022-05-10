@@ -13,4 +13,4 @@ docker :
 	$(exec) "cd /app && pip3 install -r requirements.txt && pip3 uninstall  --no-input Flask  && pip3 install --no-input Flask"
 
 clean :
-	docker rm $(target_name)
+	docker rm -f $(target_name)
