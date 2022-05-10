@@ -8,7 +8,7 @@ cp = docker cp
 docker :
 	docker run -itd --name $(target_name) $(from_image)
 	$(exec) "mkdir /app"
-	$(cp) ./ $(target_name):/app
+	$(cp) ../ $(target_name):/app
 	$(exec) "cd /app && pip3 install -r requirements.txt"
 
 start :
