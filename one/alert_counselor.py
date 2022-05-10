@@ -32,15 +32,22 @@ def get_one_report_for(counselor=None):
             if form.get(stu._class.class_name) is None:
                 form[stu._class.class_name] = []
             form[stu._class.class_name].append(stu)
+        # 将未完成打卡的班级生成一条消息
         mess_list = []
         for cls, stu_list in form.items():
             if stu_list is not None:
                 mess_list.append(f"{cls}：{'、'.join(map(lambda x: x.student_name, stu_list))}")
+
         date_str = datetime.now().strftime("%Y-%m-%d") + '打卡未完成人员名单：'
         # 发送私聊消息：日期
         message.send_private_msg(counselor.counselor_qq, date_str)
-        # 发送私聊消息：名单
-        mess = '\n'.join(mess_list)
+        # 有人未完成打卡才发送消息
+        if len(mess_list) > 0:
+            # 发送私聊消息：名单
+            mess = '\n'.join(mess_list)
+
+        else:
+            mess = '所有班级都完成了打卡'
         message.send_private_msg(counselor.counselor_qq, mess)
     except exceptions.TokenExpire:
         # 发送私聊消息：名单
