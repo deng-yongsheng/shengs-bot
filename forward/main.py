@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import random
 from flask import Flask, request
 from paho.mqtt import client as mqtt_client
