@@ -8,6 +8,7 @@ import click
 import schedule
 
 import cube as p_cube
+import forward
 import one as p_one
 import messge_process
 
