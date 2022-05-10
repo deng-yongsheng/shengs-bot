@@ -1,4 +1,4 @@
-FROM fnndsc/ubuntu-python3
+FROM python3
 EXPOSE 5701
 CMD mkdir /app
 WORKDIR /app
