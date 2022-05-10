@@ -185,6 +185,16 @@ class MessageReplyBase:
     def __repr__(self):
         return f"<消息回复 {self.reply}>"
 
+    def __init__(self, reply: str = None, auto_escape: bool = False):
+        """
+        要回复的内容
+        :param reply:
+        :param auto_escape:
+        :return:
+        """
+        self.reply = reply
+        self.auto_escape = auto_escape
+
     @property
     def json(self):
         raise RuntimeError('必须重置此函数')
@@ -197,16 +207,6 @@ class PrivateMessageReply(MessageReplyBase):
 
     def __repr__(self):
         return f"<私聊消息回复 {self.reply}>"
-
-    def __init__(self, reply: str = None, auto_escape: bool = False):
-        """
-        要回复的内容
-        :param reply:
-        :param auto_escape:
-        :return:
-        """
-        self.reply = reply
-        self.auto_escape = auto_escape
 
     @property
     def json(self):
