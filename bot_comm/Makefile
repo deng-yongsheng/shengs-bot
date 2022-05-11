@@ -9,6 +9,7 @@ cp = docker cp
 docker :
 	docker run -itd --name $(target_name) $(from_image)
 	$(exec) "mkdir /app"
+	$(exec) "ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime"
 	cd .. && $(cp) ./ $(target_name):/app
 	$(exec) "cd /app && pip3 install -r requirements.txt"
 
