@@ -1,6 +1,6 @@
 from_image = python
-target_name = bot-comm
-current_folder = bot_com
+target_name = bot-reply
+current_folder = bot_reply
 exec = docker exec -it $(target_name) bash -c
 cp = docker cp
 

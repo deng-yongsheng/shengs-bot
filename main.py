@@ -9,7 +9,7 @@ import schedule
 
 import cube as p_cube
 import one as p_one
-import bot_comm
+import bot_reply
 
 
 def gen_time_str_list(s_time: datetime.time, e_time: datetime.time, interval: datetime.timedelta) -> List[str]:
@@ -64,7 +64,7 @@ def process_message():
     """
     接收处理机器人消息
     """
-    bot_comm.app.run()
+    bot_reply.app.run()
 
 
 @cli.group()

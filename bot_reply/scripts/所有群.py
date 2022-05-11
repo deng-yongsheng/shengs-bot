@@ -15,3 +15,16 @@ def ping_pong(message: GroupMessage):
         reply = None
     return reply
 
+
+@common_group_message_handler
+def alert_one_punch(message: GroupMessage):
+    """
+    在收到ping 的时候回复pong
+    :param message:
+    :return:
+    """
+    if message.raw_message == 'ping':
+        reply = GroupMessageReply(reply='pong')
+    else:
+        reply = None
+    return reply
