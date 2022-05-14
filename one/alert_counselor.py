@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 import exceptions
@@ -41,11 +42,11 @@ def get_one_report_for(counselor=None):
         date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '打卡未完成人员名单：'
         # 发送私聊消息：日期
         message.send_private_msg(counselor.counselor_qq, date_str)
+        time.sleep(1)
         # 有人未完成打卡才发送消息
         if len(mess_list) > 0:
             # 发送私聊消息：名单
             mess = '\n'.join(mess_list)
-
         else:
             mess = '所有班级都完成了打卡'
         message.send_private_msg(counselor.counselor_qq, mess)
