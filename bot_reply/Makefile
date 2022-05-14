@@ -1,20 +1,20 @@
-from_image = python
-target_name = bot-reply
-current_folder = bot_reply
-exec = docker exec -it $(target_name) bash -c
-cp = docker cp
+FROM_IMAGE 		:= python
+TARGET_NAME 	:= bot-reply
+CURRENT_FOLDER 	:= bot_reply
+EXEC 			:= docker exec -it $(TARGET_NAME) bash -c
+CP 				:= docker cp
 
 .PHONY : docker clean
 
 docker :
-	docker run -itd --name $(target_name) $(from_image)
-	$(exec) "mkdir /app"
-	$(exec) "ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime"
-	cd .. && $(cp) ./ $(target_name):/app
-	$(exec) "cd /app && pip3 install -r requirements.txt"
+	docker run -itd --name $(TARGET_NAME) $(FROM_IMAGE)
+	$(EXEC) "mkdir /app"
+	$(EXEC) "ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime"
+	cd .. && $(CP) ./ $(TARGET_NAME):/app
+	$(EXEC) "cd /app && pip3 install -r requirements.txt"
 
 start :
-	docker exec -itd $(target_name) bash -c "cd /app && python3 main.py process-message"
+	docker exec -itd $(TARGET_NAME) bash -c "cd /app && python3 main.py process-message"
 
 clean :
-	docker rm -f $(target_name)
+	docker rm -f $(TARGET_NAME)
