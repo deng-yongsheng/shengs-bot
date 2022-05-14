@@ -54,7 +54,7 @@ Usage: main.py COMMAND
 
 ## 待完成工作
 
-- [x] docker容器化，部署到centos
+- [x] ~~docker容器化，部署到centos~~
 - [x] 辅导员提醒
 - [ ] 记录启停时间
 - [x] 异常记入文件（~~数据库~~）
