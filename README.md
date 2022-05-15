@@ -2,12 +2,17 @@
 
 ## 概述
 
-使用go-cqhttp，可以稳定发送消息
+基于go-cqhttp，python3，flask，requests，sqlalchemy，MariaDB，docker
++ 旧版本在github上有开源
++ 新版本还没有开源
 
 ## 使用
 
 ```text
-Usage: main.py COMMAND
+Usage: main.py COMMAND1 COMMAND2 [OPTIONS]
+
+Options:
+  --help  Show this message and exit.
 ```
 
 ### command:
@@ -16,9 +21,12 @@ Usage: main.py COMMAND
 + cube
     + alert 班级魔方打卡提醒
     + punch 班级魔方打卡
+    + counselor  向辅导员发送提醒消息
 + one
     + alert 小one易打卡提醒
     + punch 小one易打卡
++ process-message  接收处理机器人消息
++ schedule-tasks   配置定时任务
 
 ## 项目结构
 
