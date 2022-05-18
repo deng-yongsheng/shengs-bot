@@ -3,6 +3,7 @@
 ## 概述
 
 基于go-cqhttp，python3，flask，requests，sqlalchemy，MariaDB，docker。  
+使用  
 目前在docker容器中运行，完全脱离了windows，效率和稳定性大大提高。除了服务器停电以外，无需人工干预。
 
 + 目前已经是第三个大版本了
@@ -35,43 +36,63 @@ Options:
 ## 项目结构
 
 ```text
-│  .gitignore               # 版本管理忽略文件
-│  exceptions.py            # 自定义异常 
-│  main.py                  # 主入口
-│  Model.DM1                # 数据库模型
+│  .gitignore
+│  config.ini               # 数据库配置文件，使用python的configparser
+│  Dockerfile               # docker容器生成脚本
+│  exceptions.py            # 项目自定义异常
+│  main.py                  # 整个项目的主入口
+│  Makefile                 # docker容器管理脚本
+│  message_type.py          # qq消息的面向对象封装
 │  README.md                # 自述文件
-│  requirements.txt         # python依赖文件
-│  sql_reverse.bat          # 数据库逆向脚本   
-│  test.py                  # 测试文件
-├─bin                       #     
-├─cube                      # 班级魔方
+│  requirements.txt         # 项目依赖
+│  test.py                  # 单元测试
+├─bot_reply
+│  │  app.py                # 主启动文件
+│  │  bot.py                # 消息接收-回复框架
+│  │  mqtt.py               # mqtt客户端
+│  │  requirements.txt      # 依赖
+│  └─scripts                # 自定义脚本
+│          all_groups.py    # 群内消息回复
+│          sheng.py         # 特定qq号码的回复
+├─cube                      # 班级魔方相关业务
 │      alert_class.py       # 班级提醒
-│      auto_punch.py        # 自动打卡
 │      request.py           # 网络请求
-│      service.py           # 数据库操作
-│      update_info.py       # 更新学生信息
-├─db                        #    
-│      db.py                # 数据库会话
-│      models.py            # 数据库模型
-├─message                   #
-│      config.py            # 消息发送配置
-│      message.py           # 消息发送
-└─one                       # 小one易
-        alert_class.py      # 班级提醒
-        alert_counselor.py  # 辅导员提醒    
-        auto_punch.py       # 自动打卡
+│      service.py           # 数据库查询
+│      update_info.py
+├─db
+│      db.py                # sqlalchemy数据库连接定义
+│      models.py            # orm数据库模型
+├─forward                   # 消息转发模块
+│      config.py            # 消息转发模块的配置项
+│      Dockerfile           # docker容器生成脚本
+│      main.py              # 主入口
+│      Makefile             # docker容器管理脚本
+│      requirements.txt     # 依赖库
+├─go-cqhttp
+│      config.yml           # go-cqhttp的配置文件
+│      device.json          # 设备描述
+│      Dockerfile           # 生成docker容器
+├─message
+│      config.py            # 配置文件
+│      message.py           # 消息发送api封装
+├─mqtt_server               # mqtt docker服务器配置
+│      Makefile
+└─one #易统计打卡
+        alert_class.py      # 发送班级提醒
+        alert_counselor.py  # 辅导员提醒
+        auto_punch.py       # 班级提醒
         request.py          # 网络请求
-        service.py          # 数据库操作
+        service.py          # 数据库业务封装
 ```
 
 ## 待完成工作
 
-- [x] ~~docker容器化，部署到centos~~
-- [x] 辅导员提醒
-- [ ] 记录启停时间
-- [x] 异常记入文件（~~数据库~~）
-- [x] **回复消息**，可以根据用户发送的消息进行特定功能部署
+- [ ] 更加完善的日志系统
 - [ ] xml消息，丰富消息样式
+- [x] ~~docker容器化，部署到centos~~
+- [x] ~~辅导员提醒~~
+- [x] ~~异常记入文件（数据库~~
+- [x] ~~**回复消息**，可以根据用户发送的消息进行特定功能部署~~
 
 ## 时间线
 
