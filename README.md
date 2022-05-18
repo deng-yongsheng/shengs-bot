@@ -46,7 +46,7 @@ Options:
 │  README.md                # 自述文件
 │  requirements.txt         # 项目依赖
 │  test.py                  # 单元测试
-├─bot_reply
+├─bot_reply                 # 机器人消息响应
 │  │  app.py                # 主启动文件
 │  │  bot.py                # 消息接收-回复框架
 │  │  mqtt.py               # mqtt客户端
