@@ -56,5 +56,4 @@ def run():
     启动mqtt监听消息
     :return:
     """
-    # client.loop_start()
     mqtt.loop_forever(timeout=1)
