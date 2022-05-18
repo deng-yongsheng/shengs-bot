@@ -1,9 +1,9 @@
-# 邓永盛的机器打卡提醒程序
+# 邓永盛的机器人打卡提醒程序
 
 ## 概述
 
 基于go-cqhttp，python3，flask，requests，sqlalchemy，MariaDB，docker。  
-使用  
+使用python的schedule进行定时任务管理，不依赖外部的crontab和操作系统，仅依赖python本身。  
 目前在docker容器中运行，完全脱离了windows，效率和稳定性大大提高。除了服务器停电以外，无需人工干预。
 
 + 目前已经是第三个大版本了
