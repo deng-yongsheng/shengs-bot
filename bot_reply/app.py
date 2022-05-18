@@ -6,7 +6,7 @@ import message
 import message_type
 from bot_reply import bot
 from .mqtt import connect_mqtt, topic
-from .scripts import 肖沫晔, 邓永盛, 所有群
+from .scripts import xiao, all_groups, sheng
 
 
 def on_message(client, userdata, msg: MQTTMessage):
