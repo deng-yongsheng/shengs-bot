@@ -2,9 +2,13 @@
 
 ## 概述
 
-基于go-cqhttp，python3，flask，requests，sqlalchemy，MariaDB，docker
-+ 旧版本在github上有开源
-+ 新版本还没有开源
+基于go-cqhttp，python3，flask，requests，sqlalchemy，MariaDB，docker。  
+目前在docker容器中运行，完全脱离了windows，效率和稳定性大大提高。除了服务器停电以外，无需人工干预。
+
++ 目前已经是第三个大版本了
++ 截至2022年5月第二次重构前：
+    + 累计发送消息 `49351+` 条
+    + 累计提醒 `408412+` 人/次
 
 ## 使用
 
@@ -21,12 +25,12 @@ Options:
 + cube
     + alert 班级魔方打卡提醒
     + punch 班级魔方打卡
-    + counselor  向辅导员发送提醒消息
+    + counselor 向辅导员发送提醒消息
 + one
     + alert 小one易打卡提醒
     + punch 小one易打卡
-+ process-message  接收处理机器人消息
-+ schedule-tasks   配置定时任务
++ process-message 接收处理机器人消息
++ schedule-tasks 配置定时任务
 
 ## 项目结构
 
