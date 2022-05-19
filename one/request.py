@@ -30,11 +30,10 @@ def get_unreported_by_token(token: Token):
             return res_j['data']['data']['unReportUsers']
 
 
-def get_unreported(clas: Clas, dept='计算机学院'):
+def get_unreported(clas: Clas):
     """
     获取所有未打卡的学生学号
     :param clas:
-    :param dept:
     :return:
     """
     print('%s小one易健康打卡情况' % clas.class_name)
@@ -46,7 +45,7 @@ def get_unreported(clas: Clas, dept='计算机学院'):
                     'Connection': 'close'
                     }
     # 获取未登录人员
-    request_parameter = {'department': '%s' % dept,
+    request_parameter = {'department': clas.dept.dept_name,
                          'team': clas.class_name,
                          'date': '%s' % (datetime.now().strftime("%Y-%m-%d")),
                          'sort': 'jobNumber',
