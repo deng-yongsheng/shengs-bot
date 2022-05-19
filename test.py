@@ -53,12 +53,16 @@ class RequestTest(unittest.TestCase):
             print(un_reported)
 
     def test2(self):
+        from exceptions import TokenExpire
         for clas in one.service.get_class_list():
-            print('*' * 30)
-            print(clas.class_name)
-            un_reported = one.request.get_unreported(clas)
-            student_list = one.service.convert_one_records_to_students(un_reported)
-            print(student_list)
+            try:
+                print('*' * 30)
+                print(clas.class_name)
+                un_reported = one.request.get_unreported(clas)
+                student_list = one.service.convert_one_records_to_students(un_reported)
+                print(student_list)
+            except TokenExpire as e:
+                print(e)
 
     def test3(self):
         print(one.service.get_finished_class_list())
