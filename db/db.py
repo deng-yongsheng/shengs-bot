@@ -11,7 +11,7 @@ db_user = conf.get('db', 'user')
 db_password = conf.get('db', 'password')
 db_name = conf.get('db', 'db')
 
-DB_URI = f'mysql+pymysql://{db_user}:{db_password}@{db_password}/{db_name}'
+DB_URI = f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}'
 engine = create_engine(DB_URI, pool_recycle=3600)
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
