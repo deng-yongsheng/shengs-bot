@@ -40,10 +40,13 @@ def schedule_tasks():
     """
     click.echo('配置定时任务')
     # 班级群 班级魔方打卡
-    for t in gen_time_str_list(datetime.time(20, 00), datetime.time(23, 40), datetime.timedelta(minutes=15)):
+    for t in gen_time_str_list(datetime.time(20, 00), datetime.time(23, 46), datetime.timedelta(minutes=15)):
         schedule.every().days.at(t).do(os.system, 'python3 main.py cube alert')
     # 班级群 小one易打卡
-    for t in gen_time_str_list(datetime.time(8, 00), datetime.time(22, 00), datetime.timedelta(minutes=60)):
+    for t in gen_time_str_list(datetime.time(8, 00), datetime.time(17, 00), datetime.timedelta(minutes=60)):
+        schedule.every().days.at(t).do(os.system, 'python3 main.py one alert')
+    # 下午17点后增加小one易打卡提醒频率
+    for t in gen_time_str_list(datetime.time(17, 00), datetime.time(24, 00), datetime.timedelta(minutes=10)):
         schedule.every().days.at(t).do(os.system, 'python3 main.py one alert')
     # 小one易辅导员提醒
     schedule.every().days.at('17:00').do(os.system, 'python3 main.py one counselor')
