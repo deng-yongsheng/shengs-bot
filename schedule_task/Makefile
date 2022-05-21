@@ -7,7 +7,7 @@ cp   := docker cp
 .PHONY : docker start clean
 
 docker :
-	mv Dockerfile ..
+	cp -f Dockerfile ..
 	cd .. && docker build -t $(target) .
 	docker run -itd --name $(target) $(target)
 
@@ -15,5 +15,5 @@ clean :
 	docker rm -f $(target)
 	docker rmi -f $(target)
 
-test :
+start :
 	$(exec) "python3 main.py one alert"
