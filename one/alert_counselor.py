@@ -13,7 +13,7 @@ def get_one_report_for(counselor=None):
     生成打卡报表
     :return:
     """
-    assert counselor == 'xiaomoye', '目前仅支持xiaomoye'
+    assert counselor == '肖沫晔', '目前仅支持肖沫晔'
     counselor = get_counselor_by_name(counselor)
     try:
         unreported_student_numbers = get_unreported_by_token(token=counselor.token)
