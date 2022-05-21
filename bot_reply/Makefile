@@ -8,7 +8,7 @@ CP	 				:= docker cp
 .PHONY : docker clean
 
 docker :
-	mv -f Dockerfile ..
+	cp -f Dockerfile ..
 	cd .. && docker build -t $(TARGET_IMAGE) .
 
 start :
