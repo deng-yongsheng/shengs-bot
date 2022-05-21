@@ -10,7 +10,7 @@ def make_response(message: PrivateMessage):
     if message.raw_message == '打卡情况':
         reply = PrivateMessageReply('正在查询小one易打卡情况')
         # 使用os.system 防止数据库长时间连接导致断开
-        thread = threading.Thread(os.system, args=('python main.py one alert counselor',))
+        thread = threading.Thread(target=os.system, args=('python main.py one counselor',))
         thread.start()
     else:
         reply = None
