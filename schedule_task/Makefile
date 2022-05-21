@@ -9,11 +9,10 @@ cp   := docker cp
 docker :
 	cp -f Dockerfile ..
 	cd .. && docker build -t $(target) .
-	docker run -itd --name $(target) $(target)
 
 clean :
 	docker rm -f $(target)
 	docker rmi -f $(target)
 
 start :
-	$(exec) "python3 main.py one alert"
+	docker run -itd --name $(target) $(target)
