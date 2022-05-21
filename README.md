@@ -11,6 +11,18 @@
     + 累计发送消息 `49351+` 条
     + 累计提醒 `408412+` 人/次
 
+## 配置
+
+使用时，依赖根目录下的`config.ini`文件，语法如下
+
+```text
+[db]
+user = root
+password = 123456
+host = dengyongsheng.cn
+db = db_name
+```
+
 ## 使用
 
 ```text
