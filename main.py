@@ -46,7 +46,7 @@ def schedule_tasks():
     for t in gen_time_str_list(datetime.time(8, 00), datetime.time(17, 00), datetime.timedelta(minutes=60)):
         schedule.every().days.at(t).do(os.system, 'python3 main.py one alert')
     # 下午17点后增加小one易打卡提醒频率
-    for t in gen_time_str_list(datetime.time(17, 00), datetime.time(24, 00), datetime.timedelta(minutes=10)):
+    for t in gen_time_str_list(datetime.time(17, 00), datetime.time(23, 40), datetime.timedelta(minutes=15)):
         schedule.every().days.at(t).do(os.system, 'python3 main.py one alert')
     # 小one易辅导员提醒
     schedule.every().days.at('17:00').do(os.system, 'python3 main.py one counselor')
